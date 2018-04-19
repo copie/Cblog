@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block title %}
+登陆
+{% endblock %}
+{% block head %}
+{{ super() }}
+<style>
+    body,
+    html {
+        width: 100%;
+        height: 100%;
+    }
+
+    body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-width: 600px;
+        min-height: 600px;
+        background-color: #F6F6F3;
+        overflow: hidden;
+        padding: 40px 0 0 0;
+    }
+
+    .c_login_wrap {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 40px 0px 200px 0px;
+
+    }
+
+    h1 {
+        text-align: center;
+        margin: 30px;
+        color: #444;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    form input {
+        margin: 10px;
+        height: 40px;
+        width: 300px;
+        font-size: 18px;
+    }
+
+    form input[type='submit'] {
+        background-color: #467B96;
+        font: 600;
+        font-size: 18px;
+        color: #ffffff;
+        border: none;
+        width: 304px;
+    }
+
+    .c_index_reg a {
+        margin: 20px;
+        font-size: 17px;
+        color: #467B96;
+        text-decoration: none;
+    }
+
+    label {
+        color: #444;
+    }
+    </style>
+{% endblock %}
+{% block body %}
+<div class="c_login_wrap">
+        <h1>Cblog</h1>
+        <form action="{{ url_for('auth.login') }}" method="POST">
+            <!-- <input type="text"> -->
+            {{ form.email() }}
+            <!-- <input type="password"> -->
+            {{ form.password() }}
+            <!-- <input type="submit" value="登陆"> -->
+            {{ form.submit() }}
+        </form>
+        <p>
+            <!-- <input id='remember' type="checkbox"> -->
+            <!-- <label for="remember"> 下次自动登陆</label> -->
+            {{ form.remember_me()}}
+            <label for="remember"> 下次自动登陆</label>
+            
+        </p>
+        <p class='c_index_reg'>
+            <a href="{{ url_for('main.index') }}">返回首页</a>
+            <a href="{{ url_for('auth.register')}}">用户注册</a>
+        </p>
+    </div>
+{% endblock %}
