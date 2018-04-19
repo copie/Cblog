@@ -1,7 +1,7 @@
 from flask import flash, render_template
 
 from . import auth
-from .forms import Login
+from .forms import Login, Register
 
 
 @auth.route('/login', methods=['GET', 'POST'])
@@ -16,4 +16,5 @@ def login():
 
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
-    return "注册"
+    form = Register()
+    return render_template('auth/register.html', form=form)
