@@ -1,0 +1,17 @@
+{% extends "base.html"%}
+{% block title %}
+    没有认证的帐户
+{% endblock %}
+
+{% block body %}
+<div>
+    <h1>Hello, {% if current_user.is_authenticated %}{{ current_user.username }}{% else %}游客{% endif %}!</h1>
+</div>
+<div>
+    <h2>
+        你的帐户没有通过邮箱认证
+    </h2>
+    <p>在你访问此网站之前你需要完成邮箱认证,也就是说你要点击此网站发送至你邮箱的认证链接</p>
+    <p>如果你没有收到电子邮件，你可以<a href="{{ url_for('auth.resend_confirmation') }}">点击这里</a>重新发送</p>
+</div>
+{% endblock %}

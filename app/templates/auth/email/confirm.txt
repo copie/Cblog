@@ -1,0 +1,8 @@
+亲爱的 {{ user.username }},
+
+欢迎您使用 copie 的 Blog!
+
+确定你的帐号请点击下面的链接如果邮箱内打开失败请复制此链接到浏览器中
+{{ url_for('auth.confirm',token=token,_external=True)}}
+
+非常感谢

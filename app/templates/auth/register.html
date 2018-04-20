@@ -74,11 +74,25 @@
 <h1>注册 Cblog 帐号</h1>
 <div class='c_register_wrap'>
   <form action="{{ url_for('auth.register') }}" method="post">
-    {{ form.email() }}
-    {{ form.user_name() }}
-    {{ form.password_first() }}
-    {{ form.password_second() }}
-    {{ form.submit() }}
+    {{ form.hidden_tag() }}
+    {{ form.email()}}
+    {% for error in form.errors.email %}
+    <span style='color:red;'>{{ error }}</span>
+    {% endfor %}
+    {{ form.user_name()}}
+    {% for error in form.errors.user_name %}
+    <span style='color:red;'>{{ error }}</span>
+    {% endfor %}
+    {{ form.password_first()}}
+    {% for error in form.errors.password_first %}
+    <span style='color:red;'>{{ error }}</span>
+    {% endfor %}
+    {{ form.password_second()}}
+    {% for error in form.errors.password_second %}
+        <span style='color:red;'>{{ error }}</span>
+    {% endfor %}
+    {{ form.submit() }}    
+
   </form>
   <div class="c_index_login">
       <a href="{{ url_for('main.index') }}">返回首页</a>

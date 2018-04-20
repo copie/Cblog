@@ -1,0 +1,25 @@
+{% extends "base.html"%}
+{% block title %}
+{% endblock %}
+{% block head %}
+<style>
+</style>
+{{ super() }}
+{% endblock %}
+{% block body %}
+<div>
+        <h1>Hello, {% if current_user.is_authenticated %}{{ current_user.username }}{% else %}游客{% endif %}!</h1>
+</div>
+<ul style="text-align: center">
+    {% for post in posts %}
+    <li>
+        <h2> {{ post.title }} </h2>
+        <p> {{ post.body }} </p>
+    </li>
+    {% endfor %}
+</ul>
+<footer>
+        
+        <p>当前服务器时间是: {{ current_time.strftime("%Y-%m-%d %H:%M:%S") }}</p>
+</footer>
+{% endblock %}

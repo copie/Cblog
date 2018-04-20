@@ -13,7 +13,7 @@ class Config():
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME', 'cblog@copie.cn')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD', '!1s=NsxFsKR0aq&S')
     MAIL_SENDER = os.environ.get('MAIL_USERNAME', 'cblog@copie.cn')
-    ADMIN_EMAIL = os.environ.get('FLASKY_ADMIN', 'cblog@copie.cn')
+    ADMIN_EMAIL = os.environ.get('ADMIN_ADMIN', 'cblog@copie.cn')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     @staticmethod

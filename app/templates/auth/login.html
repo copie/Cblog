@@ -74,12 +74,16 @@
 <div class="c_login_wrap">
         <h1>Cblog</h1>
         <form action="{{ url_for('auth.login') }}" method="POST">
-            <!-- <input type="text"> -->
-            {{ form.email() }}
-            <!-- <input type="password"> -->
-            {{ form.password() }}
-            <!-- <input type="submit" value="登陆"> -->
-            {{ form.submit() }}
+            {{ form.hidden_tag() }}
+            {{ form.email()}}
+            {% for error in form.errors.email %}
+            <span style='color:red;'>{{ error }}</span>
+            {% endfor %}
+            {{ form.password()}}
+            {% for error in form.errors.password %}
+            <span style='color:red;'>{{ error }}</span>
+            {% endfor %}
+            {{ form.submit() }}    
         </form>
         <p>
             <!-- <input id='remember' type="checkbox"> -->
