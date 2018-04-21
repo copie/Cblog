@@ -43,7 +43,6 @@
     }
 
     form input {
-        margin: 10px 0px;
         height: 40px;
         width: 302px;
         font-size: 18px;
@@ -114,7 +113,7 @@
 {% block body %}
 <div class="c_login_wrap">
         <h1>Cblog</h1>
-        <form action="{{ url_for('auth.login') }}" method="POST">
+        <form action="" method="POST">
             {{ form.hidden_tag() }}
             <div class='email_warp' id='email_warp'>
                 {{ form.email()}}
