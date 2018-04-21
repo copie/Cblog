@@ -43,11 +43,14 @@
     }
 
     form input {
-        margin: 10px;
+        margin: 10px 0px;
         height: 40px;
-        width: 300px;
+        width: 302px;
         font-size: 18px;
-    }
+        border:1px solid #a9a9a9;
+        padding: 0px 0px;
+        margin: 0px 0px; 
+        }
 
     form input[type='submit'] {
         background-color: #467B96;
@@ -56,6 +59,7 @@
         color: #ffffff;
         border: none;
         width: 304px;
+        height: 42px;
     }
 
     .c_index_reg a {
@@ -68,21 +72,66 @@
     label {
         color: #444;
     }
+    .password_warp, .email_warp{
+        display: flex;
+        flex-direction: column;
+        width: 304px;
+        height: 70px;
+        padding: 0px 0px;
+        border: none;
+        margin: 0px 0px;
+    }
+    .password_info, .email_info{
+        padding: 0px 0px;
+        border: none;
+        margin: 0px 0px;
+        font-size: 12px;
+        opacity:0.8;
+    }
     </style>
+    <script>
+        function check_email() {
+            
+           var input =  document.getElementById('email')
+           info = document.getElementById('email_info')
+           pant = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
+           console.log(typeof(input.value))
+           console.log(input.value.length)
+           console.log(input.value.length==0)
+           if(input.value.length==0)
+           {
+               info.innerText=''
+           }else if(pant.test(input.value)){
+                info.style.color='green'
+                info.innerText="输入的邮箱格式正确"
+           }else{
+                info.style.color='red'
+                info.innerText="输入的邮箱格式错误"
+           }
+        }
+    </script>
 {% endblock %}
 {% block body %}
 <div class="c_login_wrap">
         <h1>Cblog</h1>
         <form action="{{ url_for('auth.login') }}" method="POST">
             {{ form.hidden_tag() }}
-            {{ form.email()}}
-            {% for error in form.errors.email %}
-            <span style='color:red;'>{{ error }}</span>
-            {% endfor %}
-            {{ form.password()}}
-            {% for error in form.errors.password %}
-            <span style='color:red;'>{{ error }}</span>
-            {% endfor %}
+            <div class='email_warp' id='email_warp'>
+                {{ form.email()}}
+                {% for error in form.errors.email %}
+                <span id = 'email_info' class= 'email_info' style="color:red">{{ error }}</span>
+                {% else %}
+                <span id = 'email_info' class="email_info"></span>                
+                {% endfor %}
+            </div>
+            <div class='password_warp' id='password_warp'>
+                {{ form.password()}}
+                {% for error in form.errors.password %}
+                <span id = 'password_info' class="password_info" style="color:red">{{ error }}</span>
+                {% else %}
+                <span id='password_info' class='password_info'></span>
+                {% endfor %}
+            </div>
             {{ form.submit() }}    
         </form>
         <p>
