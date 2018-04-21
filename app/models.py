@@ -7,6 +7,7 @@ from datetime import datetime
 
 
 class User(db.Model, UserMixin):
+    '''用户'''
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(64), unique=True, index=True)
@@ -80,6 +81,7 @@ class AnonymousUser(AnonymousUserMixin):
 
 
 class Role(db.Model):
+    '''角色权限'''
     __tablename__ = 'roles'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=True)
@@ -131,10 +133,40 @@ class Permission:
 login_manager.anonymous_user = AnonymousUser
 
 
+# 数据库多对多标记,一篇文章有多个分类一个分类下也有很多的文章,标签也是这样
+mark = db.Table('marks',
+                db.Column('Post_id', db.Integer, db.ForeignKey('posts.id')),
+                db.Column('Tag_id', db.Integer, db.ForeignKey('tags.id')),
+                db.Column('Classify_id', db.Integer,
+                          db.ForeignKey('classifys.id'))
+                )
+
+
 class Post(db.Model):
+    '''文章'''
     __tablename__ = 'posts'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(64), index=True)
     body = db.Column(db.Text)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow())
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    tag = db.relationship('Tag', secondary=mark,
+                          backref=db.backref('posts', lazy='dynamic'),
+                          lazy='dynamic')
+    classify = db.relationship('Classify', secondary=mark,
+                               backref=db.backref('posts', lazy='dynamic'),
+                               lazy='dynamic')
+
+
+class Tag(db.Model):
+    '''标签'''
+    __tablename__ = 'tags'
+    id = db.Column(db.Integer, primary_key=True)
+    tag = db.Column(db.String(64), index=True)
+
+
+class Classify(db.Model):
+    '''分类'''
+    __tablename__ = 'classifys'
+    id = db.Column(db.Integer, primary_key=True)
+    classify = db.Column(db.String(64), index=True)
