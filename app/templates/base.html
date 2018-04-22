@@ -12,40 +12,43 @@
         {% endblock %}
     </title>
     {% endblock %}
+    <style>
+    html,
+    body{
+        margin: 0;
+        padding: 0;
+        
+    }
+
+    </style>
 </head>
 
 <body>
-    {% block body %}
-    {% endblock %}    
-    {% block modal%}
-    {% if get_flashed_messages() %}
-        <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
-        <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
-        <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    {% endif %}
-    {% for message in get_flashed_messages() %}
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                            &times;
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        {{ message }}
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <script>
-                $('#myModal').modal('show')
-        </script>
-    {% endfor %} 
+    {% if request.endpoint[:7] == 'manage.' %}
+    {% block manage_header %}
+    {% include "topbar.html"%}
     {% endblock %}
+    {% endif %}  
+    {% block body %}
+    {% endblock %}
+    {% if get_flashed_messages() %}
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/xluos_modal.css')}}">
+    {% for message in get_flashed_messages() %}
+    <div id="modal" class="modal">
+            <div id="modal-content" class="modal-content">
+                <h4>标题</h4>
+                <div class="modal-body">
+                {{ message }}
+                </div>
+                <footer class="modal-footer">
+                    <button id="cancel">取 消</button>
+                    <button id="sure">确 定</button>
+                </footer>
+            </div>
+     </div>
+     <script src="{{ url_for('static', filename='js/xluos_modal.js')}}"></script>
+    {% endfor %}
+    {% endif %}
 </body>
 </html>
