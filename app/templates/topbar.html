@@ -1,0 +1,152 @@
+<style>
+    ul {
+        margin: 0;
+        padding: 0;
+    }
+
+    li {
+        list-style-type: none;
+    }
+
+    a {
+        color: #bbb;
+        text-decoration: none;
+        line-height: 36px;
+    }
+
+    .clearfloat {
+        zoom: 1;
+    }
+
+    .clearfloat::after {
+        display: block;
+        clear: both;
+        content: "";
+        visibility: hidden;
+        height: 0;
+    }
+
+    .topbar {
+        height: 36px;
+        background: #292d33;
+        padding: 0 10px;
+    }
+
+    .menu-list {
+        float: left;
+    }
+
+    .menu-list .menu-item {
+        position: relative;
+        float: left;
+        padding: 0 10px;
+        box-sizing: border-box;
+        border-left: 1px solid #383d45;
+        border-right: 1px solid #383d45;
+        margin: 0 -0.5px;
+
+    }
+
+    .menu-list .menu-item:hover {
+        background: #202328;
+    }
+
+    .submenu {
+        position: absolute;
+        top: 36px;
+        left: 0;
+        height: 0;
+        overflow: hidden;
+    }
+
+    .menu-item:hover .submenu {
+        height: auto;
+        background: #202328;
+        color: #bbb;
+    }
+
+    .submenu .submenu-item {
+        height: 36px;
+        padding: 0 10px;
+        width: 150px;
+        line-height: 36px;
+    }
+
+    .submenu .submenu-item:hover {
+        color: #fff;
+        background: #292d33;
+    }
+
+    .operate {
+        float: right;
+    }
+
+    .operate li {
+        float: left;
+        line-height: 36px;
+        padding: 0 10px;
+        border-left: 1px solid #383d45;
+        border-right: 1px solid #383d45;
+        margin-left: -0.5px;
+    }
+    .operate li:hover{
+        background: #202328;
+    }
+    .operate li:hover a{
+        color: #fff;
+    }
+</style>
+
+<nav class="topbar clearfloat">
+    <ul class="menu-list clearfloat">
+        <li class="menu-item">
+            <a href="{{ url_for('main.user', username=current_user.username) }}">控制台</a>
+            <ul class="submenu">
+                <li class="submenu-item"><a href="{{ url_for('main.user', username=current_user.username) }}">概要</a></li>
+                <li class="submenu-item"><a href="{{ url_for('manage.edit_profile') }}">个人设置</a></li>
+            </ul>
+        </li>
+        {%if current_user.is_administrator() %}
+        <li class="menu-item">
+            <a href="{{ url_for('manage.writeblog') }}">撰写</a>
+            <ul class="submenu">
+                <li class="submenu-item"><a href="{{ url_for('manage.writeblog') }}">撰写文章</a></li>
+            </ul>
+        </li>
+        {% endif %}
+        {%if current_user.is_administrator() %}
+        <li class="menu-item">
+            <a href="#">管理</a>
+            <ul class="submenu">
+                <li class="submenu-item"><a href="#">文章</a></li>
+                <li class="submenu-item"><a href="#">用户</a></li>    
+                <li class="submenu-item"><a href="#">标签</a></li>
+                <li class="submenu-item"><a href="#">分类</a></li>                
+            </ul>
+        </li>
+        {% endif %}
+        {%if current_user.is_administrator() %}
+        <li class="menu-item">
+            <a href="#">设置</a>
+            <ul class="submenu">
+                <li class="submenu-item"><a href="#">待定1</a></li>
+                <li class="submenu-item"><a href="#">待定2</a></li>    
+                <li class="submenu-item"><a href="#">待定3</a></li>
+                <li class="submenu-item"><a href="#">待定4</a></li>                
+            </ul>
+        </li>
+        {% endif %}
+        
+    </ul>
+    <ul class="operate">
+        <li>
+            <a href="{{ url_for('main.user', username=current_user.username) }}" class="name">{{ current_user.username }}</a>
+        </li>
+        <li>
+            <a href="{{ url_for('auth.logout') }}" class="logout">注销</a>
+        </li>
+        <li>
+            <a href="{{ url_for('main.index') }}" class="home">首页</a>
+        </li>
+    </ul>
+</nav>

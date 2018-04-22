@@ -12,6 +12,7 @@ from .forms import EditProfileAdminForm, EditProfileForm, PostForm
 @manage.route('/manage/edit-profile', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
+    print("asdhasjdhkasj")
     form = EditProfileForm()
     if form.validate_on_submit():
         current_user.name = form.name.data
@@ -21,7 +22,7 @@ def edit_profile():
         db.session.commit()
         flash("你的资料已经修改完成")
         print(current_user.name, current_user.location, current_user.about_me)
-        return redirect(url_for('.user', username=current_user.username))
+        return redirect(url_for('main.user', username=current_user.username))
     form.name.data = current_user.name
     form.location.data = current_user.location
     form.about_me.data = current_user.about_me
