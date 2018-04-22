@@ -24,7 +24,7 @@
 </head>
 
 <body>
-    {% if request.endpoint[:7] == 'manage.' %}
+    {% if request and request.endpoint[:7] == 'manage.' %}
     {% block manage_header %}
     {% include "topbar.html"%}
     {% endblock %}
@@ -32,7 +32,6 @@
     {% block body %}
     {% endblock %}
     {% if get_flashed_messages() %}
-    
     <link rel="stylesheet" href="{{ url_for('static', filename='css/xluos_modal.css')}}">
     {% for message in get_flashed_messages() %}
     <div id="modal" class="modal">
