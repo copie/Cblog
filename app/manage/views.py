@@ -1,12 +1,12 @@
-from flask import abort, flash, redirect, render_template, url_for
+from flask import abort, flash, redirect, render_template, url_for, request
 from flask_login import current_user, login_required
-
+from wtforms import BooleanField
 from . import manage
 from .. import db
-from ..decorators import admin_required, permission_required
-from ..models import Post, Role, User
-
-from .forms import EditProfileAdminForm, EditProfileForm, PostForm
+from .. decorators import admin_required, permission_required
+from .. models import Post, Role, Tag, User
+from . forms import (EditProfileAdminForm, EditProfileForm, DelTagForm,
+                     PostForm, AddTagForm)
 
 
 @manage.route('/manage/edit-profile', methods=['GET', 'POST'])
@@ -69,3 +69,34 @@ def writeblog():
         db.session.commit()
         return redirect(url_for('main.index'))
     return render_template('manage/writeblog.html', form=form)
+
+
+def select_sql(tag):
+    tmp = Tag.query.filter_by(tag=tag).first()
+    if tmp:
+        return tmp
+    return None
+
+
+@manage.route('/manage/tags', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def manage_tags():
+    form_one = AddTagForm()
+    form_list = DelTagForm()
+    if request.args.get('do') == 'del':
+        if form_list.validate_on_submit():
+            list(map(db.session.delete, map(
+                select_sql, form_list.tags.data.split(','))))
+            db.session.commit()
+
+    if request.args.get('do') == 'add':
+        if form_one.validate_on_submit():
+            tag = Tag()
+            tag.tag = form_one.tag.data
+            db.session.add(tag)
+            db.session.commit()
+
+    tags = (x.tag for x in Tag.query.filter_by().all())
+    return render_template('manage/tags.html',
+                           form_one=form_one, form_list=form_list, tags=tags)

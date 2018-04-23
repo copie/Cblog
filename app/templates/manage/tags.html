@@ -1,0 +1,67 @@
+{% extends "base.html"%}
+{% block title %}
+    书写文章
+{% endblock %}
+
+{% block head%}
+{{ super() }}
+<script>
+    function set_pick(target) {
+        target.style.color = 'green'
+        target.style.background = 'red'
+    }
+    function set_nopick(target) {
+        target.style.color = 'red';
+        target.style.background = 'green';
+    }
+    tags = new Set();    
+    // 事件委托
+    function clickp(e) {
+        var event = e || window.event;
+        var target = event.target || event.srcElement;
+        if (target.matches('p')) {
+            if(tags.has(target.innerText)){
+                set_nopick(target)
+                tags.delete(target.innerText)
+            }else{
+                tags.add(target.innerText)
+                set_pick(target);
+            }
+            var del = document.getElementById('tags')
+            del.value = [...tags].join(',')
+        }
+        
+    }
+</script>
+<style>
+    #tags{
+        display: none;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+{% for error in form_list.errors.tags %}
+{{ modal(error) }}
+{% endfor %}
+{% for error in form_one.errors.tag %}
+{{ modal(error) }}
+{% endfor %}
+<div onclick='clickp()'>
+    {% for x in tags %}
+    <p class='tag_lable' >{{ x }}</p>
+    {% endfor %}
+</div>
+<p>删除</p>
+<form action="{{ url_for('manage.manage_tags', do='del')}}" method="POST">
+    {{ form_list.hidden_tag() }}
+    {{ form_list.tags() }}
+    {{ form_list.submit() }}
+</form>
+<p>添加</p>
+<form action="{{ url_for('manage.manage_tags', do='add')}}" method="POST">
+        {{ form_one.hidden_tag() }}
+        {{ form_one.tag() }}
+        {{ form_one.submit() }}
+    </form>
+{% endblock %}
