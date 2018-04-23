@@ -119,9 +119,9 @@
             <a href="#">管理</a>
             <ul class="submenu">
                 <li class="submenu-item"><a href="#">文章</a></li>
-                <li class="submenu-item"><a href="#">用户</a></li>    
+                <li class="submenu-item"><a href="{{ url_for('manage.manage_users') }}">用户</a></li>    
                 <li class="submenu-item"><a href="{{ url_for('manage.manage_tags') }}">标签</a></li>
-                <li class="submenu-item"><a href="#">分类</a></li>                
+                <li class="submenu-item"><a href="{{ url_for('manage.manage_classifys') }}">分类</a></li>                
             </ul>
         </li>
         {% endif %}

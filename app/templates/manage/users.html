@@ -1,0 +1,37 @@
+{% extends "base.html"%}
+{% block title %}
+    书写文章
+{% endblock %}
+{% block head%}
+{{ super() }}
+
+{% endblock %}
+{% block body %}
+<table border="1px">
+        <tr>
+          <th>列数</th>
+          <th>id</th>
+          <th>邮箱</th>
+          <th>用户名</th>
+          <th>是否认证</th>
+          <th>用户权限</th>
+          <th>真实姓名</th>
+          <th>地址</th>
+          <th>简介</th>
+          <th>认证时间</th>
+          <th>最后登陆时间</th>
+          <th>修改按钮</th>
+                    
+        </tr>
+        {% for user in all_info %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            {% for info in user %}
+            <td>{{info}}</td>
+            {% endfor %}
+            
+            <td><a href="{{ url_for('manage.edit_profile_admin',id=all_id[loop.index0]) }}">修改</a></td>
+        </tr>
+         {% endfor %}         
+      </table>
+{% endblock %}

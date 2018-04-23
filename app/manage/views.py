@@ -4,9 +4,9 @@ from wtforms import BooleanField
 from . import manage
 from .. import db
 from .. decorators import admin_required, permission_required
-from .. models import Post, Role, Tag, User
+from .. models import Post, Role, Tag, User, Classify
 from . forms import (EditProfileAdminForm, EditProfileForm, DelTagForm,
-                     PostForm, AddTagForm)
+                     PostForm, AddTagForm, DelClassifyForm, AddClassifyForm)
 
 
 @manage.route('/manage/edit-profile', methods=['GET', 'POST'])
@@ -71,7 +71,7 @@ def writeblog():
     return render_template('manage/writeblog.html', form=form)
 
 
-def select_sql(tag):
+def select_sql_tag(tag):
     tmp = Tag.query.filter_by(tag=tag).first()
     if tmp:
         return tmp
@@ -87,7 +87,7 @@ def manage_tags():
     if request.args.get('do') == 'del':
         if form_list.validate_on_submit():
             list(map(db.session.delete, map(
-                select_sql, form_list.tags.data.split(','))))
+                select_sql_tag, form_list.tags.data.split(','))))
             db.session.commit()
 
     if request.args.get('do') == 'add':
@@ -100,3 +100,51 @@ def manage_tags():
     tags = (x.tag for x in Tag.query.filter_by().all())
     return render_template('manage/tags.html',
                            form_one=form_one, form_list=form_list, tags=tags)
+
+
+def select_sql_classify(classify):
+    tmp = Classify.query.filter_by(classify=classify).first()
+    if tmp:
+        return tmp
+    return None
+
+
+@manage.route('/manage/classifys', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def manage_classifys():
+
+    form_one = AddClassifyForm()
+    form_list = DelClassifyForm()
+    if request.args.get('do') == 'del':
+        if form_list.validate_on_submit():
+            list(map(db.session.delete, map(
+                select_sql_classify, form_list.classifys.data.split(','))))
+            db.session.commit()
+
+    if request.args.get('do') == 'add':
+        if form_one.validate_on_submit():
+            classify = Classify()
+            classify.classify = form_one.classify.data
+            db.session.add(classify)
+            db.session.commit()
+
+    classifys = (x.classify for x in Classify.query.filter_by().all())
+    return render_template('manage/classifys.html',
+                           form_one=form_one,
+                           form_list=form_list, classifys=classifys)
+
+
+@manage.route('/manage/users', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def manage_users():
+    all_user = User.query.filter_by().all()
+    info_list = ['id', 'email', 'username', 'confirmed',
+                 'role_id', 'name', 'location', 'about_me', 'member_since',
+                 'last_since']
+    all_info = map(lambda user: map(
+        lambda info: getattr(user, info), info_list), all_user)
+    all_id = map(lambda user: getattr(user, 'id'), all_user)
+    return render_template('manage/users.html',
+                           all_info=all_info, all_id=list(all_id))

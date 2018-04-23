@@ -1,6 +1,6 @@
 {% extends "base.html"%}
 {% block title %}
-    书写文章
+    修改分类
 {% endblock %}
 
 {% block head%}
@@ -14,7 +14,7 @@
         target.style.color = 'red';
         target.style.background = 'green';
     }
-    tags = new Set();    
+    classifys = new Set();    
     // 事件委托
     function clickp(e) {
         console.log(e)
@@ -22,53 +22,53 @@
         
         var target = event.target || event.srcElement;
         if (target.matches('p')) {
-            if(tags.has(target.innerText)){
+            if(classifys.has(target.innerText)){
                 set_nopick(target)
-                tags.delete(target.innerText)
+                classifys.delete(target.innerText)
             }else{
-                tags.add(target.innerText)
+                classifys.add(target.innerText)
                 set_pick(target);
             }
-            var del = document.getElementById('tags')
-            del.value = [...tags].join(',')
+            var del = document.getElementById('classifys')
+            del.value = [...classifys].join(',')
         }
         
     }
 </script>
 <style>
-    #tags{
+    #classifys{
         display: none;
     }
 </style>
 {% endblock %}
 
 {% block body %}
-{% for error in form_list.errors.tags %}
+{% for error in form_list.errors.classifys %}
 {{ modal(error) }}
 {% endfor %}
-{% for error in form_one.errors.tag %}
+{% for error in form_one.errors.classify %}
 {{ modal(error) }}
 {% endfor %}
-<div id='tag_table'>
-    {% for x in tags %}
-    <p class='tag_lable' >{{ x }}</p>
+<div id='classify_table'>
+    {% for x in classifys %}
+    <p class='classify_lable' >{{ x }}</p>
     {% endfor %}
 </div>
 <p>删除</p>
-<form action="{{ url_for('manage.manage_tags', do='del')}}" method="POST">
+<form action="{{ url_for('manage.manage_classifys', do='del')}}" method="POST">
     {{ form_list.hidden_tag() }}
-    {{ form_list.tags() }}
+    {{ form_list.classifys() }}
     {{ form_list.submit() }}
 </form>
 <p>添加</p>
-<form action="{{ url_for('manage.manage_tags', do='add')}}" method="POST">
+<form action="{{ url_for('manage.manage_classifys', do='add')}}" method="POST">
         {{ form_one.hidden_tag() }}
-        {{ form_one.tag() }}
+        {{ form_one.classify() }}
         {{ form_one.submit() }}
     </form>
 <script>
         (function(){
-        document.getElementById('tag_table').addEventListener('click',clickp);
+        document.getElementById('classify_table').addEventListener('click',clickp);
     })()
 </script>
 {% endblock %}
