@@ -67,20 +67,31 @@ def manageblog(id):
     all_classify = list(
         map(lambda classify: classify.classify, Classify.query.all()))
     post = Post.query.get_or_404(id)
+    if form.validate_on_submit():
+        post.title = form.title.data
+        post.body = form.body.data
+
+        tags = add_tags(form.tags.data)
+        tmp = post.tags.all()
+        list(map(lambda t: post.tags.remove(t), tmp))
+        # 删除原来的标签
+        list(map(lambda t: post.tags.append(t), tags))
+        # 添加新的标签
+        author = current_user._get_current_object()
+
+        classifys = add_classifys(form.classifys.data)
+        tmp = post.classifys.all()
+        list(map(lambda c: post.classifys.remove(c), tmp))
+        list(map(lambda c: post.classifys.append(c), classifys))
+        db.session.commit()
+        flash("修改文章完成")
+        return redirect(url_for('manage.manage_posts'))
     info = []
     info.append(post.title)
     info.append(post.body)
     info.append(','.join(map(lambda tag: tag.tag, post.tags.all())))
     info.append(
         ','.join(map(lambda classify: classify.classify, post.classifys.all())))
-    if form.validate_on_submit():
-        post.title = form.title.data
-        post.body = form.body.data
-        
-        author = current_user._get_current_object()
-        db.session.commit()
-        flash("修改文章完成")
-        return redirect(url_for('manage.manage_posts'))
     return render_template('manage/manageblog.html', form=form,
                            all_tag=all_tag, all_classify=all_classify, info=info)
 
@@ -96,13 +107,15 @@ def writeblog():
     if form.validate_on_submit():
         post = Post(title=form.title.data, body=form.body.data,
                     author=current_user._get_current_object())
+
         db.session.add(post)
         db.session.commit()
         flash("添加文章完成")
         return redirect(url_for('main.index'))
-
-    return render_template('manage/writeblog.html', form=form,
-                           all_tag=all_tag, all_classify=all_classify)
+    info = ['']*4
+    return render_template('manage/manageblog.html', form=form,
+                           all_tag=all_tag, all_classify=all_classify,
+                           info=info)
 
 
 def select_sql_tag(tag):
@@ -110,6 +123,20 @@ def select_sql_tag(tag):
     if tmp:
         return tmp
     return None
+
+
+def add_tags(tag_str):
+    tag_list = tag_str.split(',')
+    tags = []
+    for tag in tag_list:
+        s_tag = select_sql_tag(tag)
+        if not s_tag:
+            s_tag = Tag()
+            s_tag.tag = tag
+            db.session.add(s_tag)
+        tags.append(s_tag)
+    db.session.commit()
+    return tags
 
 
 @manage.route('/manage/tags', methods=['GET', 'POST'])
@@ -141,6 +168,20 @@ def select_sql_classify(classify):
     if tmp:
         return tmp
     return None
+
+
+def add_classifys(classify_str):
+    classify_list = classify_str.split(',')
+    classifys = []
+    for classify in classify_list:
+        s_classify = select_sql_classify(classify)
+        if not s_classify:
+            s_classify = Classify()
+            s_classify.classify = classify
+            db.session.add(s_classify)
+        classifys.append(s_classify)
+    db.session.commit()
+    return classifys
 
 
 @manage.route('/manage/classifys', methods=['GET', 'POST'])
