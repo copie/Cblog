@@ -25,7 +25,7 @@
         <td>{{info}}</td>
         {% endfor %}
         
-        <td><a href="#">修改</a></td>
+        <td><a href="{{ url_for('manage.manageblog',id=all_id[loop.index0],next=url_for('manage.manage_posts')) }}">修改</a></td>
         {# 上下文中有 all_id 可以通过ID 进行跳转修改 #}
     </tr>
      {% endfor %}   

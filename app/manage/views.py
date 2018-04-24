@@ -58,18 +58,51 @@ def edit_profile_admin(id):
     return render_template('manage/edit_profile.html', form=form, user=user)
 
 
+@manage.route('/manage/modifyblog/<int:id>', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def manageblog(id):
+    form = PostForm()
+    all_tag = list(map(lambda tag: tag.tag, Tag.query.all()))
+    all_classify = list(
+        map(lambda classify: classify.classify, Classify.query.all()))
+    post = Post.query.get_or_404(id)
+    info = []
+    info.append(post.title)
+    info.append(post.body)
+    info.append(','.join(map(lambda tag: tag.tag, post.tags.all())))
+    info.append(
+        ','.join(map(lambda classify: classify.classify, post.classifys.all())))
+    if form.validate_on_submit():
+        post.title = form.title.data
+        post.body = form.body.data
+        
+        author = current_user._get_current_object()
+        db.session.commit()
+        flash("修改文章完成")
+        return redirect(url_for('manage.manage_posts'))
+    return render_template('manage/manageblog.html', form=form,
+                           all_tag=all_tag, all_classify=all_classify, info=info)
+
+
 @manage.route('/manage/writeblog', methods=['GET', 'POST'])
 @login_required
 @admin_required
 def writeblog():
     form = PostForm()
+    all_tag = list(map(lambda tag: tag.tag, Tag.query.all()))
+    all_classify = list(
+        map(lambda classify: classify.classify, Classify.query.all()))
     if form.validate_on_submit():
         post = Post(title=form.title.data, body=form.body.data,
                     author=current_user._get_current_object())
         db.session.add(post)
         db.session.commit()
+        flash("添加文章完成")
         return redirect(url_for('main.index'))
-    return render_template('manage/writeblog.html', form=form)
+
+    return render_template('manage/writeblog.html', form=form,
+                           all_tag=all_tag, all_classify=all_classify)
 
 
 def select_sql_tag(tag):

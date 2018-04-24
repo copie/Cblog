@@ -41,8 +41,12 @@ class EditProfileAdminForm(FlaskForm):
 
 
 class PostForm(FlaskForm):
-    title = StringField('标题', validators=[Required(), Length(1, 256)])
+    title = StringField('标题', validators=[Required('标题不能为空'), Length(1, 256)])
     body = TextAreaField('正文')
+    tags = StringField('标签名称', validators=[Length(0, 64), Regexp(
+        '^[\u4e00-\u9fa5\w]*[,\u4e00-\u9fa5\w]*$', message='标签格式出现问题')])
+    classifys = StringField('分类名称', validators=[Length(0, 64), Regexp(
+        '^[\u4e00-\u9fa5\w]*[,\u4e00-\u9fa5\w]*$', message='分类格式出现问题')])
     submit = SubmitField('提交')
 
 
@@ -77,12 +81,13 @@ class DelTagForm(FlaskForm):
             return tmp
         return None
 
+
 class AddClassifyForm(FlaskForm):
     classify = StringField('分类名称', validators=[Required(message='分类不能为空'),
-                                          Length(
-                                              1, 64, message='输入过长或过短(1-64)'),
-                                          Regexp('^[\u4e00-\u9fa5\w]+$',
-                                                 message='不能包含除汉字和英文以外的其他字符')])
+                                               Length(
+        1, 64, message='输入过长或过短(1-64)'),
+        Regexp('^[\u4e00-\u9fa5\w]+$',
+               message='不能包含除汉字和英文以外的其他字符')])
     submit = SubmitField('提交')
 
     def validate_classify(self, field):
@@ -92,10 +97,10 @@ class AddClassifyForm(FlaskForm):
 
 class DelClassifyForm(FlaskForm):
     classifys = StringField('分类名称',
-                       validators=[
-                           Required(message='输入分类为空'),
-                           Regexp('^[\u4e00-\u9fa5\w]+[,\u4e00-\u9fa5\w]*$',
-                                  message='删除分类失败')])
+                            validators=[
+                                Required(message='输入分类为空'),
+                                Regexp('^[\u4e00-\u9fa5\w]+[,\u4e00-\u9fa5\w]*$',
+                                       message='删除分类失败')])
     submit = SubmitField('提交')
 
     def validate_classifys(self, field):

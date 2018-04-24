@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}
+    书写文章
+{% endblock %}
+{% block head %}
+{{ super() }}
+<style>
+    .edit{
+        text-align: center;
+        background-color: cornsilk;
+    }
+    form{
+        display: flex;
+        flex-direction: column;
+        align-items: center;        
+    }
+    input {
+        text-align: center;
+    }
+</style>
+{% endblock %}
+
+{% block body%}
+
+    {% for error in form.errors.titles %}
+    {{ modal(error) }}
+    {% endfor %}
+    {% for error in form.errors.body %}
+    {{ modal(error) }}
+    {% endfor %}
+    {% for error in form.errors.tags %}
+    {{ modal(error) }}
+    {% endfor %}
+    {% for error in form.errors.classifys %}
+    {{ modal(error) }}
+    {% endfor %}
+    <div>
+        <form action="" method="post">
+            {{ form.hidden_tag() }}
+            {{ form.title.label}} {{form.title(value=info[0]) }}
+            <!-- {{ form.body.label }} {{ form.body(value=info[1]) }} -->
+            <textarea name="body" id="body" cols="30" rows="10">{{ info[1] }}</textarea>
+            {{ form.tags.label }} {{ form.tags(value= info[2]) }}
+            {{ form.classifys.label }} {{ form.classifys(value=info[3]) }}            
+            {{ form.submit()}}
+        </form>
+    </div>
+    <p>________________________</p>
+    <p>标签</p>
+    <div>
+        <ul>
+        {% for tag in all_tag %}
+        <li>{{ tag }}</li>
+        {% endfor %}            
+        </ul>
+    </div>
+    <p>_______________________</p>
+    <p>分类</p>
+    <div>
+            <ul>
+            {% for classify in all_classify %}
+            <li>{{ classify }}</li>
+            {% endfor %}            
+            </ul>
+        </div>
+{% endblock %}
