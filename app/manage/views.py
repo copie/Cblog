@@ -46,7 +46,8 @@ def edit_profile_admin(id):
         db.session.add(user)
         db.session.commit()
         flash('已经修改完成用户信息')
-        return redirect(url_for('.user', username=user.username))
+        return redirect(request.args.get('next') or url_for('main.user', username=user.username))
+
     form.email.data = user.email
     form.username.data = user.username
     form.confirmed.data = user.confirmed
@@ -135,11 +136,11 @@ def manage_classifys():
                            form_list=form_list, classifys=classifys)
 
 
-@manage.route('/manage/users', methods=['GET', 'POST'])
+@manage.route('/manage/users')
 @login_required
 @admin_required
 def manage_users():
-    all_user = User.query.filter_by().all()
+    all_user = User.query.all()
     info_list = ['id', 'email', 'username', 'confirmed',
                  'role_id', 'name', 'location', 'about_me', 'member_since',
                  'last_since']
@@ -148,3 +149,28 @@ def manage_users():
     all_id = map(lambda user: getattr(user, 'id'), all_user)
     return render_template('manage/users.html',
                            all_info=all_info, all_id=list(all_id))
+
+
+@manage.route('/manage/posts')
+@login_required
+@admin_required
+def manage_posts():
+    all_post = Post.query.all()
+    all_info = []
+    all_id = []
+    for post in all_post:
+        tmp_info = []
+        tmp_info.append(post.id)
+        tmp_info.append(post.title)
+        tmp_info.append(post.author.username)
+        tmp_info.append(
+            ','.join(map(lambda tag: tag.tag, post.tags.all())))
+
+        tmp_info.append(','.join(map(lambda classify: classify.classify,
+                                     post.classifys.all())))
+        tmp_info.append(post.timestamp)
+        all_id.append(post.id)
+        all_info.append(tmp_info)
+
+    return render_template('manage/posts.html',
+                           all_info=all_info, all_id=all_id)

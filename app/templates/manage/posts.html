@@ -1,0 +1,33 @@
+{% extends "base.html"%}
+{% block title %}
+    修改标签
+{% endblock %}
+
+{% block head%}
+{{ super() }}
+{% endblock %}
+{% block body %}
+<table border="1px">
+    <tr>
+        <td>行数</td>
+        <th>ID</th>
+        <th>文章标题</th>
+        <th>作者</th>
+        <th>标签</th>
+        <th>分类</th>
+        <th>最后修改时间</th>
+        <th>修改</th>
+    </tr>
+    {% for post in all_info %}
+    <tr>
+        <td>{{ loop.index }}</td>
+        {% for info in post %}
+        <td>{{info}}</td>
+        {% endfor %}
+        
+        <td><a href="#">修改</a></td>
+        {# 上下文中有 all_id 可以通过ID 进行跳转修改 #}
+    </tr>
+     {% endfor %}   
+</table>
+{% endblock %}

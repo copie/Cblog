@@ -30,7 +30,7 @@
             <td>{{info}}</td>
             {% endfor %}
             
-            <td><a href="{{ url_for('manage.edit_profile_admin',id=all_id[loop.index0]) }}">修改</a></td>
+            <td><a href="{{ url_for('manage.edit_profile_admin',id=all_id[loop.index0],next=url_for('manage.manage_users')) }}">修改</a></td>
         </tr>
          {% endfor %}         
       </table>

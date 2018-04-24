@@ -150,12 +150,12 @@ class Post(db.Model):
     body = db.Column(db.Text)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow())
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    tag = db.relationship('Tag', secondary=mark,
-                          backref=db.backref('posts', lazy='dynamic'),
-                          lazy='dynamic')
-    classify = db.relationship('Classify', secondary=mark,
-                               backref=db.backref('posts', lazy='dynamic'),
-                               lazy='dynamic')
+    tags = db.relationship('Tag', secondary=mark,
+                           backref=db.backref('posts', lazy='dynamic'),
+                           lazy='dynamic')
+    classifys = db.relationship('Classify', secondary=mark,
+                                backref=db.backref('posts', lazy='dynamic'),
+                                lazy='dynamic')
 
 
 class Tag(db.Model):

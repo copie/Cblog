@@ -21,7 +21,7 @@
 {% block body%}
 {% if current_user.is_administrator() and user %}
 <div class='edit'>
-    <form action="{{url_for('manage.edit_profile_admin',id=user.id)}}" method="post">
+    <form action="" method="post">
     {{ form.hidden_tag() }}
     {{ form.email.label }} {{form.email() }}
     {{ form.username.label }} {{form.username() }}
@@ -35,7 +35,7 @@
 </div>
 {% else %}
     <div class="edit">
-        <form action='{{ url_for("manage.edit_profile") }}' method="post">
+        <form action='' method="post">
         {{ form.hidden_tag() }}
         {{ form.name.label }} {{ form.name() }}
         {{ form.location.label }} {{ form.location() }}            
