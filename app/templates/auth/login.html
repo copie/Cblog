@@ -134,11 +134,8 @@
             {{ form.submit() }}    
         </form>
         <p>
-            <!-- <input id='remember' type="checkbox"> -->
-            <!-- <label for="remember"> 下次自动登陆</label> -->
             {{ form.remember_me()}}
             <label for="remember"> 下次自动登陆</label>
-            
         </p>
         <p class='c_index_reg'>
             <a href="{{ url_for('main.index') }}">返回首页</a>

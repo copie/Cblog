@@ -107,8 +107,25 @@ def writeblog():
     all_classify = list(
         map(lambda classify: classify.classify, Classify.query.all()))
     if form.validate_on_submit():
-        post = Post(title=form.title.data, body=form.body.data,
-                    author=current_user._get_current_object())
+        post = Post()
+        post.title = form.title.data
+        post.body = form.body.data
+
+        tags = add_tags(form.tags.data)
+        tmp = post.tags.all()
+        list(map(lambda t: post.tags.remove(t), tmp))
+        # 删除原来的标签
+        list(map(lambda t: post.tags.append(t), tags))
+        # 添加新的标签
+        post.author = current_user._get_current_object()
+
+        classifys = add_classifys(form.classifys.data)
+        tmp = post.classifys.all()
+        list(map(lambda c: post.classifys.remove(c), tmp))
+        list(map(lambda c: post.classifys.append(c), classifys))
+        db.session.commit()
+        flash("添加文章完成")
+        return redirect(url_for('main.index'))
 
         db.session.add(post)
         db.session.commit()

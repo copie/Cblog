@@ -14,7 +14,8 @@ def index():
     posts = Post.query.order_by(Post.timestamp.desc()).all()
     tags_amount = len(Tag.query.all())
     classifys_amount = len(Classify.query.all())
-    return render_template('index.html', posts=posts, tags_amount=tags_amount,
+    return render_template('main/index.html', posts=posts,
+                           tags_amount=tags_amount,
                            classifys_amount=classifys_amount)
 
 
@@ -36,13 +37,13 @@ def user(username):
     user = User.query.filter_by(username=username).first()
     if user is None:
         abort(404)
-    return render_template('user.html', user=user)
+    return render_template('main/user.html', user=user)
 
 
 @main.route('/tags')
 def tags():
     tags = map(lambda x: x.tag, Tag.query.all())
-    return render_template('tags.html', tags=tags)
+    return render_template('main/tags.html', tags=tags)
 
 
 @main.route('/tag/<tag>')

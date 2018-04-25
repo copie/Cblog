@@ -1,4 +1,5 @@
-{% extends "base.html"%}
+{% extends "layouts/base.html"%}
+{% import "macros/macro.html" as macro with context %}
 {% block title %}
     Cblog
 {% endblock %}
@@ -8,7 +9,6 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='index.css')}}">
 {% endblock %}
 {% block body %}
-<div class='headband'></div>
 <div class="content">
     {% block content %}
     <div id="post" class='post'>
@@ -44,66 +44,6 @@
     </ul>
     {% endblock %}
 </div>
-{% block sidebar %}
-<aside id="sidebar" class="sidebar">
-    <div id='header-inner' class="header-inner">
-        <div id='site-meta' class="site-meta">
-            <h1 id='site-title' class='site-title'>Cblog</h1>
-            <p id="site-subtitle" class="site-subtitle">这是小标题</p>
-        </div>
-        <nav id="site-nav" class="site-nav">
-            <ul>
-                <li>
-                    <a href="{{ url_for('main.index')}}">首页</a>
-                </li>
-                <li>
-                    <a href="#">归档</a>
-                </li>
-                <li>
-                    <a href="{{ url_for('main.tags') }}">标签</a>
-                </li>
-                <li>
-                    <a href="#">搜索</a>
-                </li>
-            </ul>
-        </nav>
-    </div>
-    <div id='sidebar-inner' class='sidebar-inner'>
-        <div id='site-author' class='site-author'>
-            <img src="http://notes.iissnan.com/uploads/m3.jpg" alt="Cblog">
-            <p class="site-author-name">copie</p>
-            <p class='site-author-element'>一个四流学校的四流渣渣</p>
-        </div>
-        <div id='site-state' class="site-state">
-            <div>
-                <a href="">
-                    <span>0</span>
-                    <span>日志</span>
-                </a>
-            </div>
-            <div>
-                <a href="">
-                    <span>{{ classifys_amount }}</span>
-                    <span>分类</span>
-                </a>
-            </div>
-            <div>
-                <a href="">
-                    <span>{{ tags_amount }}</span>
-                    <span>标签</span>
-                </a>
-            </div>
-        </div>
-        <div class="btn-list">
-            {% if current_user.is_authenticated %}
-                <a href="{{ url_for('main.user', username=current_user.username) }}">{{ current_user.username }}</a>
-                <a href="{{ url_for('auth.logout')}}">注销</a>
-            {% else %}
-                <a href="{{url_for('auth.login')}}">登陆</a>
-                <a href="{{ url_for('auth.register')}}">注册</a>
-            {% endif %}
-        </div>
-    </div>
-</aside>
+{{ macro.sidebar() }}
 {% endblock %}
-{% endblock %}
+
