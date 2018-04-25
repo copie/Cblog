@@ -1,0 +1,18 @@
+{% extends "index.html" %}
+{% block title %}
+    Cblog
+{% endblock %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+{% block body %}
+{{super()}}
+{% block content %}
+<ul>
+{% for tag in tags %}
+
+<a href="{{url_for('main.tag',tag=tag)}}"><li>{{ tag }}</li></a>
+{% endfor %}    
+</ul>
+{% endblock %}
+{% endblock %}

@@ -6,15 +6,16 @@ from flask_login import current_user, login_required
 from . import main
 from .. import db
 from ..decorators import admin_required, permission_required
-from ..models import Permission, Post, Role, User
+from ..models import Permission, Post, Role, User, Tag, Classify
 
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
     posts = Post.query.order_by(Post.timestamp.desc()).all()
-    return render_template('index.html',
-                           current_time=datetime.utcnow(),
-                           posts=posts)
+    tags_amount = len(Tag.query.all())
+    classifys_amount = len(Classify.query.all())
+    return render_template('index.html', posts=posts, tags_amount=tags_amount,
+                           classifys_amount=classifys_amount)
 
 
 @main.route('/test')
@@ -32,9 +33,18 @@ def for_admins_only():
 
 @main.route('/user/<username>')
 def user(username):
-    print(username)
     user = User.query.filter_by(username=username).first()
-    print(user)
     if user is None:
         abort(404)
     return render_template('user.html', user=user)
+
+
+@main.route('/tags')
+def tags():
+    tags = map(lambda x: x.tag, Tag.query.all())
+    return render_template('tags.html', tags=tags)
+
+
+@main.route('/tag/<tag>')
+def tag(tag):
+    return tag

@@ -46,7 +46,8 @@ def edit_profile_admin(id):
         db.session.add(user)
         db.session.commit()
         flash('已经修改完成用户信息')
-        return redirect(request.args.get('next') or url_for('main.user', username=user.username))
+        return redirect(request.args.get('next') or
+                        url_for('main.user', username=user.username))
 
     form.email.data = user.email
     form.username.data = user.username
@@ -90,10 +91,11 @@ def manageblog(id):
     info.append(post.title)
     info.append(post.body)
     info.append(','.join(map(lambda tag: tag.tag, post.tags.all())))
-    info.append(
-        ','.join(map(lambda classify: classify.classify, post.classifys.all())))
-    return render_template('manage/manageblog.html', form=form,
-                           all_tag=all_tag, all_classify=all_classify, info=info)
+    info.append(','.join(map(lambda classify: classify.classify,
+                             post.classifys.all())))
+    return render_template('manage/manageblog.html',
+                           form=form, all_tag=all_tag,
+                           all_classify=all_classify, info=info)
 
 
 @manage.route('/manage/writeblog', methods=['GET', 'POST'])

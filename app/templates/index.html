@@ -10,7 +10,7 @@
 {% block body %}
 <div class='headband'></div>
 <div class="content">
-
+    {% block content %}
     <div id="post" class='post'>
         <div id='post_head' class="post_head">
             <h1>
@@ -33,6 +33,7 @@
             </div>
         </div>
     </div>
+    
     <ul class="page-list">
 
         <li class="forbid">1</li>
@@ -41,7 +42,9 @@
         <li class="item">4</li>
         <li class="item">></li>
     </ul>
+    {% endblock %}
 </div>
+{% block sidebar %}
 <aside id="sidebar" class="sidebar">
     <div id='header-inner' class="header-inner">
         <div id='site-meta' class="site-meta">
@@ -57,7 +60,7 @@
                     <a href="#">归档</a>
                 </li>
                 <li>
-                    <a href="#">标签</a>
+                    <a href="{{ url_for('main.tags') }}">标签</a>
                 </li>
                 <li>
                     <a href="#">搜索</a>
@@ -74,26 +77,24 @@
         <div id='site-state' class="site-state">
             <div>
                 <a href="">
-                    <span>100</span>
+                    <span>0</span>
                     <span>日志</span>
                 </a>
             </div>
             <div>
                 <a href="">
-                    <span>127</span>
+                    <span>{{ classifys_amount }}</span>
                     <span>分类</span>
                 </a>
             </div>
             <div>
                 <a href="">
-                    <span>876</span>
+                    <span>{{ tags_amount }}</span>
                     <span>标签</span>
                 </a>
             </div>
         </div>
         <div class="btn-list">
-            <!-- <button>登录</button>
-            <button>注册</button> -->
             {% if current_user.is_authenticated %}
                 <a href="{{ url_for('main.user', username=current_user.username) }}">{{ current_user.username }}</a>
                 <a href="{{ url_for('auth.logout')}}">注销</a>
@@ -104,4 +105,5 @@
         </div>
     </div>
 </aside>
+{% endblock %}
 {% endblock %}
