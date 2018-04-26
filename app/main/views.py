@@ -9,14 +9,18 @@ from ..decorators import admin_required, permission_required
 from ..models import Permission, Post, Role, User, Tag, Classify
 
 
+def info_list():
+    info_list = {}
+    info_list['tags_amount'] = len(Tag.query.all())
+    info_list['classifys_amount'] = len(Classify.query.all())
+    info_list['blog_amount'] = len(Post.query.all())
+    info_list['all_page'] = info_list['blog_amount']+1
+    return info_list
+
+
 @main.route('/', methods=['GET', 'POST'])
 def index():
-    posts = Post.query.order_by(Post.timestamp.desc()).all()
-    tags_amount = len(Tag.query.all())
-    classifys_amount = len(Classify.query.all())
-    return render_template('main/index.html', posts=posts,
-                           tags_amount=tags_amount,
-                           classifys_amount=classifys_amount)
+    return redirect(url_for("main.page", num=1))
 
 
 @main.route('/test')
@@ -43,9 +47,23 @@ def user(username):
 @main.route('/tags')
 def tags():
     tags = map(lambda x: x.tag, Tag.query.all())
-    return render_template('main/tags.html', tags=tags)
+    return render_template('main/tags.html', tags=tags, info_list=info_list())
 
 
 @main.route('/tag/<tag>')
 def tag(tag):
     return tag
+
+
+@main.route('/page/<int:num>')
+def page(num):
+    # 博客分页,每页10个,注意当 num = 0 时会出现[3,4...,11]
+    n = 5
+    posts = Post.query.order_by(Post.timestamp.desc()).all()[
+        (num - 1) * n: num * n - 1]
+    posts_len = int(len(Post.query.all())/n)+1
+    num_list = range(1 if num < 5 else num-4,
+                     posts_len+1 if num > posts_len - 5 else num + 4)
+    print(num_list)
+    return render_template('main/index.html', info_list=info_list(),
+                           posts=posts, num=num, num_list=num_list)

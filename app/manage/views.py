@@ -12,7 +12,6 @@ from . forms import (EditProfileAdminForm, EditProfileForm, DelTagForm,
 @manage.route('/manage/edit-profile', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
-    print("asdhasjdhkasj")
     form = EditProfileForm()
     if form.validate_on_submit():
         current_user.name = form.name.data

@@ -47,34 +47,34 @@ body{
     color: #555;
     font-weight: 200;
 }
-#info {
+.info {
     display: flex;
     justify-content: center;
 }
-#info span {
+.info span {
     margin: 5px;
 }
 .post_body p {
     margin: 10px 0;
 }
-#post_button {
+.post_button {
     display: flex;
     justify-content: center;
     padding-top: 30px;
 }
-#post_button button {
+.post_button button {
     background: #fff;
     border: 2px solid #555;
     width: 120px;
     height: 40px;
     transition: all 0.5s;
 }
-#post_button button:hover {
+.post_button button:hover {
     background: #555;
     color: #fff;
     width: 140px;
 }
-#post_button button::after {
+.post_button button::after {
     content: "  »";
 }
 
@@ -210,7 +210,7 @@ button {
     display: flex;
     justify-content: center;
 }
-.page-list li {
+.page-list a {
     display: block;
     cursor: pointer;
     user-select: none;

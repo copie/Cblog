@@ -34,20 +34,20 @@
         </div>
         <div id='site-state' class="site-state">
             <div>
-                <a href="">
-                    <span>{{ journal_amount }}</span>
+                <a href="{#这个以后指向归档#}">
+                    <span>{{ info_list['blog_amount'] }}</span>
                     <span>日志</span>
                 </a>
             </div>
             <div>
-                <a href="">
-                    <span>{{ classifys_amount }}</span>
+                <a href="#">
+                    <span>{{ info_list['classifys_amount'] }}</span>
                     <span>分类</span>
                 </a>
             </div>
             <div>
-                <a href="">
-                    <span>{{ tags_amount }}</span>
+                <a href="{{ url_for('main.tags') }}">
+                    <span>{{ info_list['tags_amount'] }}</span>
                     <span>标签</span>
                 </a>
             </div>

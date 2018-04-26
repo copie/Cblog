@@ -1,4 +1,5 @@
 {% extends "layouts/base.html" %}
+{% import "macros/macro.html" as macro with context %}
 {% block title %}
     书写文章
 {% endblock %}
@@ -23,16 +24,16 @@
 {% block body%}
 
     {% for error in form.errors.titles %}
-    {{ modal(error) }}
+    {{ macro.modal(error) }}
     {% endfor %}
     {% for error in form.errors.body %}
-    {{ modal(error) }}
+    {{ macro.modal(error) }}
     {% endfor %}
     {% for error in form.errors.tags %}
-    {{ modal(error) }}
+    {{ macro.modal(error) }}
     {% endfor %}
     {% for error in form.errors.classifys %}
-    {{ modal(error) }}
+    {{ macro.modal(error) }}
     {% endfor %}
     <div>
         <form action="" method="post">
