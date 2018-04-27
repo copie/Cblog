@@ -55,6 +55,12 @@ def tag(tag):
     return tag
 
 
+@main.route('/posts')
+def posts():
+    posts = Post.query.order_by(Post.timestamp.desc()).all()
+    return render_template('main/posts.html', posts=posts, info_list=info_list())
+
+
 @main.route('/page/<int:num>')
 def page(num):
     # 博客分页,每页10个,注意当 num = 0 时会出现[3,4...,11]

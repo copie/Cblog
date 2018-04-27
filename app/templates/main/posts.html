@@ -13,10 +13,10 @@
 
 <div class="content">
     <ul>
-        {% for tag in tags %}    
-        <li><a href="{{url_for('main.tag',tag=tag)}}">{{ tag }}</a></li>
+        {% for post in posts %}    
+        <li></li><a href="#{# 这个要跳转到文章的具体页面#}">{{ post.timestamp }}------>{{ post.title }}</a></li>
         {% endfor %}    
-    </ul>             
+    </ul>
 </div>
 {{ macro.sidebar() }}
 {% endblock %}

@@ -28,11 +28,9 @@ body{
 }
 .content{
     margin-left: 20px;
-    padding: 40px 40px 40px 40px;
-    width: 620px;
-    background-color: #FFFFFF;
+    width: 830px;
 }
-.post::after {
+.posts::after {
     display: block;
     content: '';
     width: 50px;
@@ -40,44 +38,34 @@ body{
     background: #ccc;
     margin: 50px auto;
 }
-.post_head h1 {
-    text-align: center;
+.post{
+    margin: 20px;
+    padding: 30px;
+    background-color: #FFFFFF;
+    line-height: 23px;
+}
+.post_head h1{
+    margin-bottom: 10px;
 }
 .post_head a {
     color: #555;
-    font-weight: 200;
+    font-weight: 500;
+    font-size: 30px;
 }
-.info {
-    display: flex;
-    justify-content: center;
+.line{
+    color: #58666e;
+    border-color:#edf1f2;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    margin: 15px;
 }
 .info span {
+    color:#98a6ad;
     margin: 5px;
 }
 .post_body p {
     margin: 10px 0;
 }
-.post_button {
-    display: flex;
-    justify-content: center;
-    padding-top: 30px;
-}
-.post_button button {
-    background: #fff;
-    border: 2px solid #555;
-    width: 120px;
-    height: 40px;
-    transition: all 0.5s;
-}
-.post_button button:hover {
-    background: #555;
-    color: #fff;
-    width: 140px;
-}
-.post_button button::after {
-    content: "  »";
-}
-
 
 .header-inner {
     background: #fff;
@@ -182,14 +170,6 @@ body{
     margin-top: 30px;
 }
 
-button {
-    background: #fff;
-    border: 2px solid #aaa;
-    width: 80px;
-    height: 40px;
-    transition: all 0.5s;
-    color: #555;
-}
 .btn-list a {
     text-align: center;
     background: #fff;
