@@ -57,14 +57,15 @@ def tag(tag):
 
 @main.route('/posts')
 def posts():
+    '''文章归档'''
     posts = Post.query.order_by(Post.timestamp.desc()).all()
     return render_template('main/posts.html', posts=posts, info_list=info_list())
 
 
 @main.route('/page/<int:num>')
 def page(num):
-    # 博客分页,每页10个,注意当 num = 0 时会出现[3,4...,11]
-    n = 5
+    # 博客分页,每页7个,注意当 num = 0 时会出现[3,4...,11]
+    n = 7
     posts = Post.query.order_by(Post.timestamp.desc()).all()[
         (num - 1) * n: num * n - 1]
     posts_len = int(len(Post.query.all())/n)+1
@@ -73,3 +74,9 @@ def page(num):
     print(num_list)
     return render_template('main/index.html', info_list=info_list(),
                            posts=posts, num=num, num_list=num_list)
+
+@main.route('/post/<int:id>.html')
+def post(id):
+    '''文章的具体内容'''
+    post = Post.query.get_or_404(id)
+    return render_template('main/post.html', post=post, info_list=info_list())

@@ -25,12 +25,9 @@
 <body>
     {{ macro.jude_topbar() }}
     {% block body %}
-    <div class="content">
-        {% block content%}
-        {% endblock %}
-    </div>
-
+    {% block content%}
     {% endblock %}
-    {{ macro.get_flashed() }} 
+    {% endblock %}
+    {{ macro.get_flashed() }}
 </body>
 </html>

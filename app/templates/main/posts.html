@@ -14,7 +14,7 @@
 <div class="content">
     <ul>
         {% for post in posts %}    
-        <li></li><a href="#{# 这个要跳转到文章的具体页面#}">{{ post.timestamp }}------>{{ post.title }}</a></li>
+        <li></li><a href="{{ url_for('main.post',id=post.id)}}">{{ post.timestamp }}------>{{ post.title }}</a></li>
         {% endfor %}    
     </ul>
 </div>
