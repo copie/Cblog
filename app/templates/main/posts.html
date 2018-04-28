@@ -1,22 +1,16 @@
-{% extends "layouts/base.html" %}
+{% extends "layouts/reception_base.html"%}
 {% import 'macros/macro.html' as macro with context %}
 {% block title %}
     Cblog
 {% endblock %}
 
-{% block head %}
-{{ super() }}
-<link rel="stylesheet" href="{{ url_for('static', filename='index.css')}}">
-{% endblock %}
+{% block content %}
 
-{% block body %}
 
-<div class="content">
     <ul>
         {% for post in posts %}    
         <li></li><a href="{{ url_for('main.post',id=post.id)}}">{{ post.timestamp }}------>{{ post.title }}</a></li>
         {% endfor %}    
     </ul>
 </div>
-{{ macro.sidebar() }}
 {% endblock %}

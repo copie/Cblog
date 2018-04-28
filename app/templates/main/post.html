@@ -1,4 +1,4 @@
-{% extends "layouts/base.html" %}
+{% extends "layouts/reception_base.html"%}
 {% import 'macros/macro.html' as macro with context %}
 {% block title %}
     Cblog
@@ -6,22 +6,21 @@
 
 {% block head %}
 {{ super() }}
-<link rel="stylesheet" href="{{ url_for('static', filename='index.css')}}">
 <style>
-    .header{
+    .post_header{
         padding:10px;
         border-bottom: 1px solid #5866;
         margin-bottom: 20px; 
     }
-    .header h1{ 
+    .post_header h1{ 
         font-weight: 300;
         font-size: 24px;
         margin-top:20px; 
     }
-    .header ul{
+    .post_header ul{
         display: flex;
     }
-    .header ul li{
+    .post_header ul li{
         padding:0 5px;
     }
     .post_body{
@@ -39,8 +38,8 @@
 
 {% block body %}
 
-<div class="content">
-     <div class='header'>
+    {% block content%}
+     <div class='post_header'>
         <h1>{{ post.title }}</h1>
         <ul>
             <li><a href="#">{{ post.author.email }}</a></li>
@@ -67,7 +66,7 @@
         <p>本文链接: <a href="{{ url_for('main.post',id=post.id,_external=True) }}">{{ url_for('main.post',id=post.id,_external=True) }}</a></p>
         <p>转载时须注明出处及本声明</p>
     </blockquote>
-            
+    {% endblock %}      
 </div>
 {{ macro.sidebar() }}
 {% endblock %}

@@ -24,9 +24,8 @@ def index():
 
 
 @main.route('/test')
-@login_required
 def test():
-    return "这个页面只有登陆过的人才可以看到"
+    return render_template('layouts/reception_base.html')
 
 
 @main.route('/admin')

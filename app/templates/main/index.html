@@ -1,52 +1,118 @@
-{% extends "layouts/base.html"%}
+{% extends "layouts/reception_base.html"%}
 {% import "macros/macro.html" as macro with context %}
-{% block title %}
-    Cblog
-{% endblock %}
-
+{% block title %}Cblog{% endblock %} 
 {% block head %}
 {{ super() }}
-<link rel="stylesheet" href="{{ url_for('static', filename='index.css')}}">
-{% endblock %}
-{% block body %}
-<div class="content">
-    {% block content %}
-    <div class='posts'>
-        {% for post in posts %}
-        <div class='post'>
-            <div class="post_head">
-                <h1>
-                    <a href="{{ url_for('main.post',id=post.id)}}">{{ post.title }}</a>
-                </h1>
-            </div>
-            <div  class='post_body'>
-                {{ post.body[0:200] }}...
-            </div>
-            <div class='line'></div>
-            <div class='info'>
-                <span>时间:{{ post.timestamp.strftime('%Y-%m-%d') }}</span>
-                <span>作者:{{ post.author.username }}</span>
-                <!-- <span>评论</span>
-                <span>阅读量</span> -->
-            </div>
-        </div>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/reception_base.css')}}">
+<style>
+    .page-list {
+        display: flex;
+        justify-content: center;
+    }
 
-        {% endfor %}
+    .page-list a {
+        display: block;
+        cursor: pointer;
+        user-select: none;
+        list-style-type: none;
+        margin: 3px;
+        color: #555;
+        border-bottom: 1px solid #ccc;
+        text-align: center;
+        line-height: 30px;
+        width: 30px;
+        height: 30px;
+        transition: all 0.5s;
+    }
+
+    .page-list .item:hover {
+        color: #555;
+        border-bottom: 1px solid #555;
+    }
+
+    .page-list .forbid {
+        background: #ccc;
+        color: #fff;
+    }
+
+    .posts::after {
+        display: block;
+        content: '';
+        width: 50px;
+        height: 1px;
+        background: #ccc;
+        margin: 50px auto;
+    }
+
+    .post {
+        margin: 20px;
+        padding: 30px;
+        background-color: #FFFFFF;
+        line-height: 23px;
+    }
+
+    .post_head h1 {
+        margin-bottom: 10px;
+    }
+
+    .post_head a {
+        color: #555;
+        font-weight: 500;
+        font-size: 30px;
+    }
+
+    .line {
+        color: #58666e;
+        border-color: #edf1f2;
+        border-bottom-style: solid;
+        border-bottom-width: 1px;
+        margin: 15px;
+    }
+
+    .info span {
+        color: #98a6ad;
+        margin: 5px;
+    }
+
+    .post_body p {
+        margin: 10px 0;
+    }
+</style>
+{% endblock %} 
+
+{% block content %}
+<div class='posts'>
+    {% for post in posts %}
+    <div class='post'>
+        <div class="post_head">
+            <h1>
+                <a href="{{ url_for('main.post',id=post.id)}}">{{ post.title }}</a>
+            </h1>
+        </div>
+        <div class='post_body'>
+            {{ post.body[0:200] }}...
+        </div>
+        <div class='line'></div>
+        <div class='info'>
+            <span>时间:{{ post.timestamp.strftime('%Y-%m-%d') }}</span>
+            <span>作者:{{ post.author.username }}</span>
+            <!-- <span>评论</span>
+                <span>阅读量</span> -->
+        </div>
+        
     </div>
-    
+    {% endfor %}
     <ul class="page-list">
 
-        {% for i in num_list %}
-        {% if i == num%}
-        <li><a class="forbid" href="{{url_for('main.page',num=i)}}">{{ i }}</a></li>
+        {% for i in num_list %} {% if i == num%}
+        <li>
+            <a class="forbid" href="{{url_for('main.page',num=i)}}">{{ i }}</a>
+        </li>
         {% else %}
-        <li><a class='item' href="{{url_for('main.page',num=i)}}">{{ i }}</a></li>
-        {% endif %}
-        {% endfor %}
+        <li>
+            <a class='item' href="{{url_for('main.page',num=i)}}">{{ i }}</a>
+        </li>
+        {% endif %} {% endfor %}
     </ul>
-    {% endblock %}
 </div>
-{{ macro.sidebar() }}
 {% endblock %}
-
-

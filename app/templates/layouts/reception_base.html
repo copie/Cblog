@@ -1,0 +1,92 @@
+{# blog 前台 页面布局 #}
+<!DOCTYPE html>
+<html lang="zh_CN">
+
+<head>
+    {% block head %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/reception_base.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <title>{% block title %}{% endblock %}</title>
+    {% endblock %}
+</head>
+
+<body>
+    <header class='header'>
+        {% block header%} {% endblock %}
+    </header>
+    <div class='pagewrap'>
+        <aside class='sidebar'>
+            <div class='headband'></div>
+            <div id='header-inner' class="header-inner">
+                <div id='site-meta' class="site-meta">
+                    <h1 id='site-title' class='site-title'>Cblog</h1>
+                    <p id="site-subtitle" class="site-subtitle">这是0000小标题</p>
+                </div>
+                <nav id="site-nav" class="site-nav">
+                    <ul>
+                        <li>
+                            <a href="{{ url_for('main.index')}}">首页</a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('main.posts') }}">归档</a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('main.tags') }}">标签</a>
+                        </li>
+                        <li>
+                            <a href="#">搜索</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div id='sidebar-inner' class='sidebar-inner'>
+                <div id='site-author' class='site-author'>
+                    <img src="http://notes.iissnan.com/uploads/m3.jpg" alt="Cblog">
+                    <p class="site-author-name">copie</p>
+                    <p class='site-author-element'>一个四流学校的四流渣渣</p>
+                </div>
+                <div id='site-state' class="site-state">
+                    <div>
+                        <a href="{#这个以后指向归档#}">
+                            <span>{% block blog_amount%}0{% endblock %}</span>
+                            <span>日志</span>
+                        </a>
+                    </div>
+                    <div>
+                        <a href="#">
+                            <span> {% block classifys_amount %}0{% endblock %}</span>
+                            <span>分类</span>
+                        </a>
+                    </div>
+                    <div>
+                        <a href="{{ url_for('main.tags') }}">
+                            <span>{% block tags_amount %}0{% endblock %}</span>
+                            <span>标签</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="btn-list">
+                    {% if current_user.is_authenticated %}
+                    <a href="{{ url_for('main.user', username=current_user.username) }}">{{ current_user.username }}</a>
+                    <a href="{{ url_for('auth.logout')}}">注销</a>
+                    {% else %}
+                    <a href="{{url_for('auth.login')}}">登陆</a>
+                    <a href="{{ url_for('auth.register')}}">注册</a>
+                    {% endif %}
+                </div>
+            </div>
+            {% block sidebar %} {% endblock %}
+        </aside>
+        <div class='content'>
+            {% block content %} {% endblock %}
+        </div>
+    </div>
+    <footer class='footer'>
+        {% block footer %} dsadahdgajhdgajshdgasjhdgasjhdgasjhdgaj{% endblock %}
+    </footer>
+</body>
+
+</html>
