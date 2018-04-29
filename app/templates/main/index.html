@@ -8,6 +8,8 @@
     .page-list {
         display: flex;
         justify-content: center;
+        align-items: center;
+        flex-direction:column;
     }
 
     .page-list a {
@@ -35,7 +37,7 @@
         color: #fff;
     }
 
-    .posts::after {
+    .page-list::after {
         display: block;
         content: '';
         width: 50px;
@@ -77,6 +79,22 @@
     .post_body p {
         margin: 10px 0;
     }
+    .posts{
+        min-height: 900px;
+        display: flex;
+        flex-direction:column;
+        justify-content:space-between;
+    }
+    /* @media screen  and (max-width: 900px) {
+        .post_body {
+            margin: 10px;
+            padding: 10px;
+        }
+        .post_head h1 {
+            margin-bottom: 15px;
+            margin-left: 10px; 
+        }
+    } */
 </style>
 {% endblock %} 
 

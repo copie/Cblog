@@ -143,7 +143,7 @@ a{
     color: #fff;
 }
 .sidebar{
-    margin: 0 0 0 130px;
+    margin: 0 0 0 10%;
 }
 body, html{
     margin: 0px;
@@ -159,10 +159,22 @@ body, html{
 
 .pagewrap{
     display: flex;
-    min-height: 800px;
+    min-height: 600px;
 }
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1200px ) {
+    .sidebar{
+        margin: 0; 
+        width: 20%;
+    }
+    .content{
+        width: 80%;
+        margin-left: 0;
+	}
+
+}
+
+@media screen and (max-width: 800px) {
     .pagewrap{
         width: 100%
     }
