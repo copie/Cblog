@@ -114,9 +114,9 @@
         </li>
         {%if current_user.is_administrator() %}
         <li class="menu-item">
-            <a href="{{ url_for('manage.writeblog') }}">撰写</a>
+            <a href="{{ url_for('manage.manageblog') }}">撰写</a>
             <ul class="submenu">
-                <li class="submenu-item"><a href="{{ url_for('manage.writeblog') }}">撰写文章</a></li>
+                <li class="submenu-item"><a href="{{ url_for('manage.manageblog') }}">撰写文章</a></li>
             </ul>
         </li>
         {% endif %}

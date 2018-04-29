@@ -1,4 +1,6 @@
+{% import 'macros/macro.html' as macro with context %}
 <!DOCTYPE html>
+
 <html lang="zh_CN">
 
 <head>
@@ -146,7 +148,7 @@
             <a href="{{ url_for('auth.register')}}">用户注册</a>
         </p>
     </div>
-
+    {{ macro.get_flashed() }}
 </body>
 
 </html>

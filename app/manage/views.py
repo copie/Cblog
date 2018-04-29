@@ -59,81 +59,54 @@ def edit_profile_admin(id):
 
 
 @manage.route('/manage/modifyblog/<int:id>', methods=['GET', 'POST'])
-@login_required
-@admin_required
-def manageblog(id):
-    form = PostForm()
-    all_tag = list(map(lambda tag: tag.tag, Tag.query.all()))
-    all_classify = list(
-        map(lambda classify: classify.classify, Classify.query.all()))
-    post = Post.query.get_or_404(id)
-    if form.validate_on_submit():
-        post.title = form.title.data
-        post.body = form.body.data
-
-        tags = add_tags(form.tags.data)
-        tmp = post.tags.all()
-        list(map(lambda t: post.tags.remove(t), tmp))
-        # 删除原来的标签
-        list(map(lambda t: post.tags.append(t), tags))
-        # 添加新的标签
-        author = current_user._get_current_object()
-
-        classifys = add_classifys(form.classifys.data)
-        tmp = post.classifys.all()
-        list(map(lambda c: post.classifys.remove(c), tmp))
-        list(map(lambda c: post.classifys.append(c), classifys))
-        db.session.commit()
-        flash("修改文章完成")
-        return redirect(url_for('manage.manage_posts'))
-    info = []
-    info.append(post.title)
-    info.append(post.body)
-    info.append(','.join(map(lambda tag: tag.tag, post.tags.all())))
-    info.append(','.join(map(lambda classify: classify.classify,
-                             post.classifys.all())))
-    return render_template('manage/manageblog.html',
-                           form=form, all_tag=all_tag,
-                           all_classify=all_classify, info=info)
-
-
 @manage.route('/manage/writeblog', methods=['GET', 'POST'])
 @login_required
 @admin_required
-def writeblog():
+def manageblog(id=None):
     form = PostForm()
     all_tag = list(map(lambda tag: tag.tag, Tag.query.all()))
     all_classify = list(
         map(lambda classify: classify.classify, Classify.query.all()))
-    if form.validate_on_submit():
+
+    if id is None:
         post = Post()
+    else:
+        post = Post.query.get_or_404(id)
+
+    if form.validate_on_submit():
         post.title = form.title.data
         post.body = form.body.data
 
+        # 删除就标签 添加新标签
         tags = add_tags(form.tags.data)
         tmp = post.tags.all()
         list(map(lambda t: post.tags.remove(t), tmp))
-        # 删除原来的标签
         list(map(lambda t: post.tags.append(t), tags))
-        # 添加新的标签
-        post.author = current_user._get_current_object()
+        author = current_user._get_current_object()
 
+        # 删除就分类 添加新分类
         classifys = add_classifys(form.classifys.data)
         tmp = post.classifys.all()
         list(map(lambda c: post.classifys.remove(c), tmp))
         list(map(lambda c: post.classifys.append(c), classifys))
-        db.session.commit()
-        flash("添加文章完成")
-        return redirect(url_for('main.index'))
+        if id is None:
+            db.session.add(post)
+            db.session.commit()
+            flash("添加文章完成")
+            return redirect(url_for('main.index'))
+        else:
+            db.session.commit()
+            flash("修改文章完成")
+            return redirect(url_for('manage.manage_posts'))
+    if id is not None:
+        form.title.data = post.title
+        form.body.data = post.body
+        form.tags.data = ','.join(map(lambda tag: tag.tag, post.tags.all()))
+        form.classifys.data = ','.join(
+            map(lambda classify: classify.classify, post.classifys.all()))
 
-        db.session.add(post)
-        db.session.commit()
-        flash("添加文章完成")
-        return redirect(url_for('main.index'))
-    info = ['']*4
     return render_template('manage/manageblog.html', form=form,
-                           all_tag=all_tag, all_classify=all_classify,
-                           info=info)
+                           all_tag=all_tag, all_classify=all_classify)
 
 
 def select_sql_tag(tag):

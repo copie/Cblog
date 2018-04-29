@@ -38,10 +38,10 @@
     <div>
         <form action="" method="post">
             {{ form.hidden_tag() }}
-            {{ form.title.label}} {{form.title(value=info[0]) }}
+            {{ form.title.label}} {{form.title() }}
             {{ form.body() }}
-            {{ form.tags.label }} {{ form.tags(value= info[2]) }}
-            {{ form.classifys.label }} {{ form.classifys(value=info[3]) }}            
+            {{ form.tags.label }} {{ form.tags() }}
+            {{ form.classifys.label }} {{ form.classifys() }}            
             {{ form.submit()}}
         </form>
 
