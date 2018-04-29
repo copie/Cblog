@@ -1,7 +1,8 @@
+from flask_pagedown.fields import PageDownField
 from flask_wtf import FlaskForm
-from wtforms import (BooleanField, SelectField, StringField, SubmitField,
-                     TextAreaField, FieldList, FormField)
-from wtforms.validators import Email, Length, Required, ValidationError, Regexp
+from wtforms import (BooleanField, FieldList, FormField, SelectField,
+                     StringField, SubmitField, TextAreaField)
+from wtforms.validators import Email, Length, Regexp, Required, ValidationError
 
 from..models import Role, User, Tag, Classify
 
@@ -42,7 +43,8 @@ class EditProfileAdminForm(FlaskForm):
 
 class PostForm(FlaskForm):
     title = StringField('标题', validators=[Required('标题不能为空'), Length(1, 256)])
-    body = TextAreaField('正文')
+    # body = TextAreaField('正文')
+    body = PageDownField("正文", validators=[Required('正文不能为空')])
     tags = StringField('标签名称', validators=[Length(0, 64), Regexp(
         '^[\u4e00-\u9fa5\w]*[,\u4e00-\u9fa5\w]*$', message='标签格式出现问题')])
     classifys = StringField('分类名称', validators=[Length(0, 64), Regexp(

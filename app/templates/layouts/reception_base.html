@@ -1,4 +1,5 @@
 {# blog 前台 页面布局 #}
+{% import 'macros/macro.html' as macro with context  %}
 <!DOCTYPE html>
 <html lang="zh_CN">
 
@@ -88,6 +89,7 @@
     <footer class='footer'>
         {% block footer %} dsadahdgajhdgajshdgasjhdgasjhdgasjhdgaj{% endblock %}
     </footer>
+    {{ macro.get_flashed() }}
 </body>
 
 </html>

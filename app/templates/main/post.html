@@ -59,7 +59,11 @@
         </ul>
      </div>
     <div class="post_body">
+            {% if post.body_html %}
+            {{ post.body_html | safe }}
+            {% else %}
             {{ post.body }}
+            {% endif %}
     </div> 
     <blockquote class="copyright">
         <p>版权属于: {{ post.author.email }}</p>
