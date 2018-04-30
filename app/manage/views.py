@@ -76,13 +76,13 @@ def manageblog(id=None):
     if form.validate_on_submit():
         post.title = form.title.data
         post.body = form.body.data
+        post.author = current_user._get_current_object()
 
         # 删除就标签 添加新标签
         tags = add_tags(form.tags.data)
         tmp = post.tags.all()
         list(map(lambda t: post.tags.remove(t), tmp))
         list(map(lambda t: post.tags.append(t), tags))
-        author = current_user._get_current_object()
 
         # 删除就分类 添加新分类
         classifys = add_classifys(form.classifys.data)
