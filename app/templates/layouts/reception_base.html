@@ -2,25 +2,34 @@
 {% import 'macros/macro.html' as macro with context  %}
 <!DOCTYPE html>
 <html lang="zh_CN">
-
 <head>
     {% block head %}
+    {% block meta %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="theme-color" content="#3a3f51">
+    {% endblock %}
+    {% block link %}
     <link rel="stylesheet" href="{{ url_for('static',filename='css/reception_base.css') }}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    {% endblock %}
     <title>{% block title %}{% endblock %}</title>
     {% endblock %}
+    <style>
+    {% block style %}
+    {% endblock %}
+    </style>
 </head>
 
 <body>
+    {% block body %}
     <header class='header'>
         {% block header%} {% endblock %}
     </header>
     <div class='pagewrap'>
         <aside class='sidebar'>
+            {% block sidebar %}
             <div class='headband'></div>
             <div id='header-inner' class="header-inner">
                 <div id='site-meta' class="site-meta">
@@ -80,7 +89,7 @@
                     {% endif %}
                 </div>
             </div>
-            {% block sidebar %} {% endblock %}
+            {% endblock %}
         </aside>
         <div class='content'>
             {% block content %} {% endblock %}
@@ -90,6 +99,9 @@
         {% block footer %} dsadahdgajhdgajshdgasjhdgasjhdgasjhdgaj{% endblock %}
     </footer>
     {{ macro.get_flashed() }}
+    {% block script %}
+    {% endblock %}
+{% endblock %}
 </body>
 
 </html>

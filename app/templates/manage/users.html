@@ -1,12 +1,11 @@
-{% extends "layouts/base.html"%}
+{% extends "layouts/backstage_base.html" %}
+{% from 'macros/macro.html' import macro %}
+
 {% block title %}
     修改用户资料
 {% endblock %}
-{% block head%}
-{{ super() }}
 
-{% endblock %}
-{% block body %}
+{% block content %}
 <table border="1px">
         <tr>
           <th>列数</th>

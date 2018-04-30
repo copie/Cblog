@@ -1,13 +1,12 @@
-{% extends "layouts/base.html"%}
+{% extends "layouts/backstage_base.html" %}
 {% from 'macros/macro.html' import macro %}
 
 {% block title %}
     修改分类
 {% endblock %}
 
-{% block head%}
-{{ super() }}
-<script>
+{% block script %}
+    {{ super() }}
     function set_pick(target) {
         target.style.color = 'green'
         target.style.background = 'red'
@@ -36,21 +35,30 @@
         }
         
     }
-</script>
-<style>
+    (function(){
+        document.getElementById('classify_table').addEventListener('click',clickp);
+    })()
+
+{% endblock %}
+
+{% block style %}
+    {{ super() }}
     #classifys{
         display: none;
     }
-</style>
 {% endblock %}
 
-{% block body %}
-{% for error in form_list.errors.classifys %}
-{{ modal(error) }}
-{% endfor %}
-{% for error in form_one.errors.classify %}
-{{ modal(error) }}
-{% endfor %}
+{% block body%}
+
+    {{ super() }}
+    {{ macro.flash_all(form_list.errors.classifys)}}
+    {{ macro.flash_all(form_one.errors.classify)}}
+
+{% endblock %}
+
+{% block content %}
+
+{{ super() }}
 <div id='classify_table'>
     {% for x in classifys %}
     <p class='classify_lable' >{{ x }}</p>
@@ -68,9 +76,5 @@
         {{ form_one.classify() }}
         {{ form_one.submit() }}
     </form>
-<script>
-        (function(){
-        document.getElementById('classify_table').addEventListener('click',clickp);
-    })()
-</script>
+
 {% endblock %}

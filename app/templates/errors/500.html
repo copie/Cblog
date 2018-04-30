@@ -1,9 +1,12 @@
-{% extends "base.html" %}
+{% extends "layouts/reception_base.html"%}
+{% import 'macros/macro.html' as macro with context %}
 
 {% block head %}
-<title>服务器内部错误</title>
-<style></style>
+<title>
+        此页面不允许访问
+</title>
 {% endblock %}
+
 {% block body %}
-<h1 style="text-align:center; font-size: 50px; color: crimson">服务器内部错误</h1>
+<h1 style="text-align:center; font-size: 50px; color: crimson">此页面不允许访问</h1>
 {% endblock %}

@@ -1,9 +1,12 @@
-{% extends "layouts/base.html"%}
+{% extends "layouts/backstage_base.html" %}
+{% from 'macros/macro.html' import macro %}
+
 {% block title %}
     修改资料
 {% endblock %}
-{% block head %}
-<style>
+
+{% block style %}
+    {{  super() }}
     .edit{
         text-align: center;
         background-color: cornsilk;
@@ -16,9 +19,10 @@
     input {
         text-align: center;
     }
-</style>
+
 {% endblock %}
-{% block body%}
+
+{% block content %}
 {% if current_user.is_administrator() and user %}
 <div class='edit'>
     <form action="" method="post">

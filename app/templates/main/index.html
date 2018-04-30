@@ -1,10 +1,10 @@
 {% extends "layouts/reception_base.html"%}
 {% import "macros/macro.html" as macro with context %}
+
 {% block title %}Cblog{% endblock %} 
-{% block head %}
-{{ super() }}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/reception_base.css')}}">
-<style>
+
+{% block style %}
+    {{ super() }}
     .page-list {
         display: flex;
         justify-content: center;
@@ -85,17 +85,6 @@
         flex-direction:column;
         justify-content:space-between;
     }
-    /* @media screen  and (max-width: 900px) {
-        .post_body {
-            margin: 10px;
-            padding: 10px;
-        }
-        .post_head h1 {
-            margin-bottom: 15px;
-            margin-left: 10px; 
-        }
-    } */
-</style>
 {% endblock %} 
 
 {% block content %}

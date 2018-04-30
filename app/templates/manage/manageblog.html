@@ -1,11 +1,12 @@
-{% extends "layouts/base.html" %}
-{% import "macros/macro.html" as macro with context %}
+{% extends "layouts/backstage_base.html" %}
+{% from 'macros/macro.html' import macro %}
+
 {% block title %}
     书写文章
 {% endblock %}
-{% block head %}
+
+{% block style %}
 {{ super() }}
-<style>
     .edit{
         text-align: center;
         background-color: cornsilk;
@@ -18,23 +19,18 @@
     input {
         text-align: center;
     }
-</style>
 {% endblock %}
 
-{% block body%}
 
-    {% for error in form.errors.titles %}
-    {{ macro.modal(error) }}
-    {% endfor %}
-    {% for error in form.errors.body %}
-    {{ macro.modal(error) }}
-    {% endfor %}
-    {% for error in form.errors.tags %}
-    {{ macro.modal(error) }}
-    {% endfor %}
-    {% for error in form.errors.classifys %}
-    {{ macro.modal(error) }}
-    {% endfor %}
+{% block body%}
+    {{ super() }}
+    {{ macro.flash_all(form.errors.titles)}}
+    {{ macro.flash_all(form.errors.body)}}
+    {{ macro.flash_all(form.errors.tags)}}
+    {{ macro.flash_all(form.errors.classifys)}}
+{% endblock %}
+
+{% block content %}
     <div>
         <form action="" method="post">
             {{ form.hidden_tag() }}

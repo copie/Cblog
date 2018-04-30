@@ -1,124 +1,124 @@
-{% import 'macros/macro.html' as macro with context %}
-<!DOCTYPE html>
+{% extends "layouts/backstage_base.html" %}
+{% from 'macros/macro.html' import macro %}
 
-<html lang="zh_CN">
+{% block title %}
+登陆
+{% endblock %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>登陆</title>
-    <style>
-        body,
-        html {
-            width: 100%;
-            height: 100%;
-            margin: 0;
-            padding: 0;
+{% block style %}
+body,
+html {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 600px;
+    background-color: #F6F6F3;
+    overflow: hidden;
+}
+
+.c_login_wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0px 0px 200px 0px;
+
+}
+
+h1 {
+    text-align: center;
+    margin: 30px;
+    color: #444;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+form input {
+    height: 40px;
+    width: 302px;
+    font-size: 18px;
+    border: 1px solid #a9a9a9;
+    padding: 0px 0px;
+    margin: 0px 0px;
+}
+
+form input[type='submit'] {
+    background-color: #467B96;
+    font: 600;
+    font-size: 18px;
+    color: #ffffff;
+    border: none;
+    width: 304px;
+    height: 42px;
+}
+
+.c_index_reg a {
+    margin: 20px;
+    font-size: 17px;
+    color: #467B96;
+    text-decoration: none;
+}
+
+label {
+    color: #444;
+}
+
+.password_warp,
+.email_warp {
+    display: flex;
+    flex-direction: column;
+    width: 304px;
+    height: 70px;
+    padding: 0px 0px;
+    border: none;
+    margin: 0px 0px;
+}
+
+.password_info,
+.email_info {
+    padding: 0px 0px;
+    border: none;
+    margin: 0px 0px;
+    font-size: 12px;
+    opacity: 0.8;
+}
+{% endblock %}
+
+{% block script %}
+
+    function check_email() {
+
+        var input = document.getElementById('email')
+        info = document.getElementById('email_info')
+        pant = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
+        console.log(typeof (input.value))
+        console.log(input.value.length)
+        console.log(input.value.length == 0)
+        if (input.value.length == 0) {
+            info.innerText = ''
+        } else if (pant.test(input.value)) {
+            info.style.color = 'green'
+            info.innerText = "输入的邮箱格式正确"
+        } else {
+            info.style.color = 'red'
+            info.innerText = "输入的邮箱格式错误"
         }
+    }
 
-        body {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            min-height: 600px;
-            background-color: #F6F6F3;
-            overflow: hidden;
-        }
+{% endblock %}
 
-        .c_login_wrap {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin: 0px 0px 200px 0px;
 
-        }
-
-        h1 {
-            text-align: center;
-            margin: 30px;
-            color: #444;
-        }
-
-        form {
-            display: flex;
-            flex-direction: column;
-        }
-
-        form input {
-            height: 40px;
-            width: 302px;
-            font-size: 18px;
-            border: 1px solid #a9a9a9;
-            padding: 0px 0px;
-            margin: 0px 0px;
-        }
-
-        form input[type='submit'] {
-            background-color: #467B96;
-            font: 600;
-            font-size: 18px;
-            color: #ffffff;
-            border: none;
-            width: 304px;
-            height: 42px;
-        }
-
-        .c_index_reg a {
-            margin: 20px;
-            font-size: 17px;
-            color: #467B96;
-            text-decoration: none;
-        }
-
-        label {
-            color: #444;
-        }
-
-        .password_warp,
-        .email_warp {
-            display: flex;
-            flex-direction: column;
-            width: 304px;
-            height: 70px;
-            padding: 0px 0px;
-            border: none;
-            margin: 0px 0px;
-        }
-
-        .password_info,
-        .email_info {
-            padding: 0px 0px;
-            border: none;
-            margin: 0px 0px;
-            font-size: 12px;
-            opacity: 0.8;
-        }
-    </style>
-    <script>
-        function check_email() {
-
-            var input = document.getElementById('email')
-            info = document.getElementById('email_info')
-            pant = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
-            console.log(typeof (input.value))
-            console.log(input.value.length)
-            console.log(input.value.length == 0)
-            if (input.value.length == 0) {
-                info.innerText = ''
-            } else if (pant.test(input.value)) {
-                info.style.color = 'green'
-                info.innerText = "输入的邮箱格式正确"
-            } else {
-                info.style.color = 'red'
-                info.innerText = "输入的邮箱格式错误"
-            }
-        }
-    </script>
-</head>
-
-<body>
+{% block body %}
     <div class="c_login_wrap">
         <h1>Cblog</h1>
         <form action="" method="POST">
@@ -148,7 +148,5 @@
             <a href="{{ url_for('auth.register')}}">用户注册</a>
         </p>
     </div>
-    {{ macro.get_flashed() }}
-</body>
 
-</html>
+{% endblock %}

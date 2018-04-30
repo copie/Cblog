@@ -1,6 +1,7 @@
-{% extends "layouts/base.html"%} 
-{% block body %}
-{% include "layouts/topbar.html"%}
+{% extends "layouts/backstage_base.html" %}
+{% from 'macros/macro.html' import macro %}
+
+{% block content  %}
 <div class="page-header">
     <h1>{{ user.username }}</h1>
     {% if user.name or user.location %}

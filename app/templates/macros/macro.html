@@ -1,36 +1,57 @@
 {# 网页结构中重复出现的 html 块 #}
 
-{% macro modal(message,title='Cblog',button1='取 消',button2='确 定') -%}
+{% macro modal(message,title='Cblog',button1='取 消',button2='确 定') %}
 {# 模态框 传入一个字符串 现实一个带有传入内容的 模态框 #}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/xluos_modal.css')}}">
-<div id="modal" class="modal">
-        <div id="modal-content" class="modal-content">
-            <h4>{{ title }}</h4>
-            <div class="modal-body">
-            {{ message }}
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/xluos_modal.css')}}">
+    <div id="modal" class="modal">
+            <div id="modal-content" class="modal-content">
+                <h4>{{ title }}</h4>
+                <div class="modal-body">
+                {{ message }}
+                </div>
+                <footer class="modal-footer">
+                    <button id="cancel">{{ button1 }}</button>
+                    <button id="sure">{{ button2 }}</button>
+                </footer>
             </div>
-            <footer class="modal-footer">
-                <button id="cancel">{{ button1 }}</button>
-                <button id="sure">{{ button2 }}</button>
-            </footer>
-        </div>
- </div>
- <script src="{{ url_for('static', filename='js/xluos_modal.js')}}"></script>
-{%- endmacro %}
+    </div>
+    <script src="{{ url_for('static', filename='js/xluos_modal.js')}}"></script>
 
-{% macro jude_topbar() -%}
-{% if request and request.endpoint[:7] == 'manage.' %}
-{# 判断是否显示顶栏 #}
-    {% include "layouts/topbar.html"%}
-{% endif %}
-{%- endmacro %}
+ {% endmacro %}
 
-{% macro get_flashed() -%}
-{% if get_flashed_messages() %}
-{% for message in get_flashed_messages() %}
-    {{ modal(message) }}
-{% endfor %}
-{% endif %}
-{%- endmacro %}
+{% macro jude_topbar() %}
+{# 判断 是否 加载 后台的 topbar #}
+{# 不过 以后我会重新调整结构 #}
+    
+    {% if request and request.endpoint[:7] == 'manage.' %}
+    {# 判断是否显示顶栏 #}
+        
+        {% include "layouts/topbar.html"%}
+
+    {% endif %}
+
+{% endmacro %}
 
 
+
+{% macro flash_all(messages) %}
+{# 显示一个可迭代对象的信息 #}
+
+    {% for message in messages %}
+
+        {{ modal(message) }}
+
+    {% endfor %}
+
+{% endmacro %}
+
+{% macro get_flashed() %}
+{# 捕获 flash() #}
+
+    {% if get_flashed_messages() %}
+
+        {{ flash_all(get_flashed_messages())}}
+
+    {% endif %}
+{% endmacro %}

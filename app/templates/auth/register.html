@@ -1,164 +1,164 @@
-<!DOCTYPE html>
-<html lang="zh_CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="theme-color" content="#3a3f51">
-    <title>注册 Cblog 帐号</title>
-    <style>
-        body,
-        html {
-            width: 100%;
-            height: 100%;
-            margin: 0;
-            padding: 0;
+{% extends "layouts/backstage_base.html" %}
+{% from 'macros/macro.html' import macro %}
+
+{% block title%}
+注册 Cblog 帐号
+{% endblock %}
+
+{% block style %}
+    body,
+    html {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 1000px;
+        background-color: #F6F6F3;
+        overflow: hidden;
+    }
+
+    .c_register_wrap {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 40px 0px 500px 0px;
+
+    }
+
+    h1 {
+        text-align: center;
+        margin: 30px;
+        color: #444;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    form input {
+        height: 40px;
+        width: 300px;
+        font-size: 18px;
+        border:1px solid #a9a9a9;
+        padding: 0px 0px;
+        margin: 0px 0px;
+    }
+
+    form input[type='submit'] {
+        background-color: #467B96;
+        font: 600;
+        font-size: 18px;
+        color: #ffffff;
+        border: none;
+        width: 304px;
+    }
+
+    .c_index_login a {
+        margin: 20px;
+        font-size: 17px;
+        color: #467B96;
+        text-decoration: none;
+    }
+
+    label {
+        color: #444;
+    }
+
+    .email_warp,
+    .password_first_warp,
+    .user_name_warp,
+    .password_second_warp {
+        display: flex;
+        flex-direction: column;
+        width: 304px;
+        height: 70px;
+        padding: 0px 0px;
+        border: none;
+        margin: 0px 0px;
+    }
+
+    .email_info,
+    .password_first_info,
+    .user_name_info,
+    .password_second_info {
+        padding: 0px 0px;
+        border: none;
+        margin: 0px 0px;
+        font-size: 12px;
+        opacity: 0.8;
+    }
+{% endblock %}
+
+{% block script %}
+    function check_email() {
+
+        var input = document.getElementById('email')
+        info = document.getElementById('email_info')
+        pant = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
+        if (input.value.length == 0) {
+            info.innerText = ''
+        } else if (pant.test(input.value)) {
+            info.style.color = 'green'
+            info.innerText = "输入的邮箱格式正确"
+        } else {
+            info.style.color = 'red'
+            info.innerText = "输入的邮箱格式错误"
         }
-    
-        body {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            min-height: 1000px;
-            background-color: #F6F6F3;
-            overflow: hidden;
+    }
+    function check_user_name() {
+        var user_name = document.getElementById('user_name')
+        info = document.getElementById('user_name_info')
+        if (user_name.value.length == 0) {
+            info.innerText = "用户名不能为空"
+            info.style.color = 'red'
+        } else if (user_name.value.length >= 1 && user_name.value.length <= 20) {
+            info.innerText = "用户名长度合适"
+            info.style.color = 'green'
+        } else {
+            info.innerText = "用户名有问题"
+            info.style.color = 'red'
         }
-    
-        .c_register_wrap {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 40px 0px 500px 0px;
-    
+    }
+    function check_password_first() {
+        var password_first = document.getElementById('password_first')
+        info = document.getElementById('password_first_info')
+        if (password_first.value.length == 0) {
+            info.innerText = "密码不能为空"
+            info.style.color = 'red'
+        } else if (password_first.value.length >= 5 && password_first.value.length <= 20) {
+            info.innerText = "密码长度合适"
+            info.style.color = 'green'
+        } else {
+            info.innerText = "密码有问题"
+            info.style.color = 'red'
         }
-    
-        h1 {
-            text-align: center;
-            margin: 30px;
-            color: #444;
+
+    }
+    function check_password_second() {
+        var password_first = document.getElementById('password_first')
+        var password_second = document.getElementById('password_second')
+        info = document.getElementById('password_second_info')
+        if(password_first.value == password_second.value)
+        {
+            info.innerText = "两次密码输入一致"
+            info.style.color = 'green'
+        }else{
+            info.innerText = "两次密码输入不一致"
+            info.style.color = 'red'
         }
-    
-        form {
-            display: flex;
-            flex-direction: column;
-        }
-    
-        form input {
-            height: 40px;
-            width: 300px;
-            font-size: 18px;
-            border:1px solid #a9a9a9;
-            padding: 0px 0px;
-            margin: 0px 0px;
-        }
-    
-        form input[type='submit'] {
-            background-color: #467B96;
-            font: 600;
-            font-size: 18px;
-            color: #ffffff;
-            border: none;
-            width: 304px;
-        }
-    
-        .c_index_login a {
-            margin: 20px;
-            font-size: 17px;
-            color: #467B96;
-            text-decoration: none;
-        }
-    
-        label {
-            color: #444;
-        }
-    
-        .email_warp,
-        .password_first_warp,
-        .user_name_warp,
-        .password_second_warp {
-            display: flex;
-            flex-direction: column;
-            width: 304px;
-            height: 70px;
-            padding: 0px 0px;
-            border: none;
-            margin: 0px 0px;
-        }
-    
-        .email_info,
-        .password_first_info,
-        .user_name_info,
-        .password_second_info {
-            padding: 0px 0px;
-            border: none;
-            margin: 0px 0px;
-            font-size: 12px;
-            opacity: 0.8;
-        }
-    </style>
-    <script>
-        function check_email() {
-    
-            var input = document.getElementById('email')
-            info = document.getElementById('email_info')
-            pant = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
-            if (input.value.length == 0) {
-                info.innerText = ''
-            } else if (pant.test(input.value)) {
-                info.style.color = 'green'
-                info.innerText = "输入的邮箱格式正确"
-            } else {
-                info.style.color = 'red'
-                info.innerText = "输入的邮箱格式错误"
-            }
-        }
-        function check_user_name() {
-            var user_name = document.getElementById('user_name')
-            info = document.getElementById('user_name_info')
-            if (user_name.value.length == 0) {
-                info.innerText = "用户名不能为空"
-                info.style.color = 'red'
-            } else if (user_name.value.length >= 1 && user_name.value.length <= 20) {
-                info.innerText = "用户名长度合适"
-                info.style.color = 'green'
-            } else {
-                info.innerText = "用户名有问题"
-                info.style.color = 'red'
-            }
-        }
-        function check_password_first() {
-            var password_first = document.getElementById('password_first')
-            info = document.getElementById('password_first_info')
-            if (password_first.value.length == 0) {
-                info.innerText = "密码不能为空"
-                info.style.color = 'red'
-            } else if (password_first.value.length >= 5 && password_first.value.length <= 20) {
-                info.innerText = "密码长度合适"
-                info.style.color = 'green'
-            } else {
-                info.innerText = "密码有问题"
-                info.style.color = 'red'
-            }
-    
-        }
-        function check_password_second() {
-            var password_first = document.getElementById('password_first')
-            var password_second = document.getElementById('password_second')
-            info = document.getElementById('password_second_info')
-            if(password_first.value == password_second.value)
-            {
-                info.innerText = "两次密码输入一致"
-                info.style.color = 'green'
-            }else{
-                info.innerText = "两次密码输入不一致"
-                info.style.color = 'red'
-            }
-    
-        }
-    </script>
-</head>
-<body>
+
+    }
+{% endblock %}
+
+{% block body %}
     <h1>注册 Cblog 帐号</h1>
 <div class='c_register_wrap'>
     <form action="{{ url_for('auth.register') }}" method="post">
@@ -201,7 +201,6 @@
         <a href="{{ url_for('auth.login') }}">用户登陆</a>
     </div>
 </div>
-</body>
-</html>
+{% endblock %}
 
 

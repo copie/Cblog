@@ -1,12 +1,12 @@
 {% extends "layouts/reception_base.html"%}
 {% import 'macros/macro.html' as macro with context %}
+
 {% block title %}
     Cblog
 {% endblock %}
 
-{% block head %}
+{% block style %}
 {{ super() }}
-<style>
     .post_header{
         padding:10px;
         border-bottom: 1px solid #5866;
@@ -33,44 +33,38 @@
         margin: 0;
         padding: 30px;
     }
-</style>
 {% endblock %}
 
-{% block body %}
-
-    {% block content%}
-     <div class='post_header'>
-        <h1>{{ post.title }}</h1>
-        <ul>
-            <li><a href="#">{{ post.author.email }}</a></li>
-            <li><a >{{ post.timestamp.strftime('%Y-%m-%d') }}</a></li>
-            <li>
-                <!-- 分类 -->
-                {% for classify in post.classifys %}
-                <a href="#">{{ classify.classify }}</a>
-                {% endfor %}
-            </li>
-            <li>
-                <!-- 标签 -->
-                {% for tag in post.tags %}
-                <a href="#">{{ tag.tag }}</a>
-                {% endfor %}
-            </li>
-        </ul>
-     </div>
-    <div class="post_body">
-            {% if post.body_html %}
-            {{ post.body_html | safe }}
-            {% else %}
-            {{ post.body }}
-            {% endif %}
-    </div> 
-    <blockquote class="copyright">
-        <p>版权属于: {{ post.author.email }}</p>
-        <p>本文链接: <a href="{{ url_for('main.post',id=post.id,_external=True) }}">{{ url_for('main.post',id=post.id,_external=True) }}</a></p>
-        <p>转载时须注明出处及本声明</p>
-    </blockquote>
-    {% endblock %}      
-</div>
-{{ macro.sidebar() }}
-{% endblock %}
+{% block content%}
+    <div class='post_header'>
+    <h1>{{ post.title }}</h1>
+    <ul>
+        <li><a href="#">{{ post.author.email }}</a></li>
+        <li><a >{{ post.timestamp.strftime('%Y-%m-%d') }}</a></li>
+        <li>
+            <!-- 分类 -->
+            {% for classify in post.classifys %}
+            <a href="#">{{ classify.classify }}</a>
+            {% endfor %}
+        </li>
+        <li>
+            <!-- 标签 -->
+            {% for tag in post.tags %}
+            <a href="#">{{ tag.tag }}</a>
+            {% endfor %}
+        </li>
+    </ul>
+    </div>
+<div class="post_body">
+        {% if post.body_html %}
+        {{ post.body_html | safe }}
+        {% else %}
+        {{ post.body }}
+        {% endif %}
+</div> 
+<blockquote class="copyright">
+    <p>版权属于: {{ post.author.email }}</p>
+    <p>本文链接: <a href="{{ url_for('main.post',id=post.id,_external=True) }}">{{ url_for('main.post',id=post.id,_external=True) }}</a></p>
+    <p>转载时须注明出处及本声明</p>
+</blockquote>
+{% endblock %}      

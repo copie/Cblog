@@ -1,0 +1,101 @@
+{% import 'macros/macro.html' as macro with context  %}
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+    {% block head %}
+    {% block meta %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="theme-color" content="#3a3f51">
+    {% endblock %}
+    <title>{% block title %}{% endblock %}</title>
+    {% endblock %}
+
+    {% block link %}
+        <link rel="stylesheet" href="{{ url_for('static',filename='css/backstage_base.css') }}">
+    {% endblock %}
+
+    <style>
+    {% block style %}
+    
+{% endblock %}
+    </style>
+</head>
+<body>
+
+    {% block body %}
+
+    {% block topbar%}
+        <nav class="topbar clearfloat">
+            <ul class="menu-list clearfloat">
+                <li class="menu-item">
+                    <a href="{{ url_for('main.user', username=current_user.username) }}">控制台</a>
+                    <ul class="submenu">
+                        <li class="submenu-item"><a href="{{ url_for('main.user', username=current_user.username) }}">概要</a></li>
+                        <li class="submenu-item"><a href="{{ url_for('manage.edit_profile') }}">个人设置</a></li>
+                    </ul>
+                </li>
+                {%if current_user.is_administrator() %}
+                <li class="menu-item">
+                    <a href="{{ url_for('manage.manageblog') }}">撰写</a>
+                    <ul class="submenu">
+                        <li class="submenu-item"><a href="{{ url_for('manage.manageblog') }}">撰写文章</a></li>
+                    </ul>
+                </li>
+                {% endif %}
+                {%if current_user.is_administrator() %}
+                <li class="menu-item">
+                    <a href="#">管理</a>
+                    <ul class="submenu">
+                        <li class="submenu-item"><a href="{{ url_for('manage.manage_posts') }}">文章</a></li>
+                        <li class="submenu-item"><a href="{{ url_for('manage.manage_users') }}">用户</a></li>    
+                        <li class="submenu-item"><a href="{{ url_for('manage.manage_tags') }}">标签</a></li>
+                        <li class="submenu-item"><a href="{{ url_for('manage.manage_classifys') }}">分类</a></li>                
+                    </ul>
+                </li>
+                {% endif %}
+                {%if current_user.is_administrator() %}
+                <li class="menu-item">
+                    <a href="#">设置</a>
+                    <ul class="submenu">
+                        <li class="submenu-item"><a href="#">待定1</a></li>
+                        <li class="submenu-item"><a href="#">待定2</a></li>    
+                        <li class="submenu-item"><a href="#">待定3</a></li>
+                        <li class="submenu-item"><a href="#">待定4</a></li>                
+                    </ul>
+                </li>
+                {% endif %}
+                
+            </ul>
+            <ul class="operate">
+                <li>
+                    <a href="{{ url_for('main.user', username=current_user.username) }}" class="name">{{ current_user.username }}</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('auth.logout') }}" class="logout">注销</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('main.index') }}" class="home">首页</a>
+                </li>
+            </ul>
+        </nav>
+    {% endblock %}
+    <div class="content">
+        {% block content%}
+        {% endblock %}
+    </div>
+
+    {% endblock %}
+    
+    {{ macro.get_flashed() }}
+
+    {% block script_file %}
+    {% endblock %}
+
+    <script>
+        {% block script %}
+        {% endblock %}
+    </script>
+</body>
+</html>
