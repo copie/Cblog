@@ -22,15 +22,21 @@
           <th>修改按钮</th>
                     
         </tr>
-        {% for user in all_info %}
-        <tr>
-            <td>{{ loop.index }}</td>
-            {% for info in user %}
-            <td>{{info}}</td>
-            {% endfor %}
-            
-            <td><a href="{{ url_for('manage.edit_profile_admin',id=all_id[loop.index0],next=url_for('manage.manage_users')) }}">修改</a></td>
-        </tr>
-         {% endfor %}         
+            {% for user in users %}
+            <tr>
+                <td>{{ loop.index}}</td>
+                <td>{{ user.id }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.confirmed }}</td>
+                <td>{{ user.role.name }}</td>
+                <td>{{ user.name }}</td>
+                <td>{{ user.location }}</td>
+                <td>{{ user.about_me }}</td>
+                <td>{{ user.member_since }}</td>
+                <td>{{ user.last_since }}</td>            
+                <td><a href="{{ url_for('manage.edit_profile_admin',id=user.id ,next=url_for('manage.manage_users')) }}">修改</a></td>
+            </tr>
+            {% endfor %}          
       </table>
 {% endblock %}

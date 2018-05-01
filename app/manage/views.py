@@ -205,15 +205,8 @@ def manage_classifys():
 @login_required
 @admin_required
 def manage_users():
-    all_user = User.query.all()
-    info_list = ['id', 'email', 'username', 'confirmed',
-                 'role_id', 'name', 'location', 'about_me', 'member_since',
-                 'last_since']
-    all_info = map(lambda user: map(
-        lambda info: getattr(user, info), info_list), all_user)
-    all_id = map(lambda user: getattr(user, 'id'), all_user)
-    return render_template('manage/users.html',
-                           all_info=all_info, all_id=list(all_id))
+    users = User.query.all()
+    return render_template('manage/users.html',users=users)
 
 
 @manage.route('/manage/posts')
@@ -221,4 +214,4 @@ def manage_users():
 @admin_required
 def manage_posts():
     posts = Post.query.all()
-    return render_template('manage/posts.html',posts=posts)
+    return render_template('manage/posts.html', posts=posts)
