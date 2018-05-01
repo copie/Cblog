@@ -220,22 +220,5 @@ def manage_users():
 @login_required
 @admin_required
 def manage_posts():
-    all_post = Post.query.all()
-    all_info = []
-    all_id = []
-    for post in all_post:
-        tmp_info = []
-        tmp_info.append(post.id)
-        tmp_info.append(post.title)
-        tmp_info.append(post.author.username)
-        tmp_info.append(
-            ','.join(map(lambda tag: tag.tag, post.tags.all())))
-
-        tmp_info.append(','.join(map(lambda classify: classify.classify,
-                                     post.classifys.all())))
-        tmp_info.append(post.timestamp)
-        all_id.append(post.id)
-        all_info.append(tmp_info)
-
-    return render_template('manage/posts.html',
-                           all_info=all_info, all_id=all_id)
+    posts = Post.query.all()
+    return render_template('manage/posts.html',posts=posts)

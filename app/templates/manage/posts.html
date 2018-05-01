@@ -18,15 +18,16 @@
         <th>最后修改时间</th>
         <th>修改</th>
     </tr>
-    {% for post in all_info %}
+    {% for post in posts %}
     <tr>
         <td>{{ loop.index }}</td>
-        {% for info in post %}
-        <td>{{info}}</td>
-        {% endfor %}
-        
-        <td><a href="{{ url_for('manage.manageblog',id=all_id[loop.index0],next=url_for('manage.manage_posts')) }}">修改</a></td>
-        {# 上下文中有 all_id 可以通过ID 进行跳转修改 #}
+        <td>{{ post.id }}</td>
+        <td>{{ post.title }}</td>
+        <td>{{ post.author.username }}</td>
+        <td>{{ post.tags.all()|join(',', attribute='tag') }}</td>
+        <td>{{ post.classifys.all()|join(',', attribute='classify') }}</td>
+        <td>{{ post.timestamp}}</td>
+        <td><a href="{{ url_for('manage.manageblog',id=post.id,next=url_for('manage.manage_posts')) }}">修改</a></td>
     </tr>
      {% endfor %}   
 </table>
