@@ -6,7 +6,7 @@ from .. import db
 from .. decorators import admin_required, permission_required
 from .. models import Post, Role, Tag, User, Classify
 from . forms import (EditProfileAdminForm, EditProfileForm, DelTagForm,
-                     PostForm, AddTagForm, DelClassifyForm, AddClassifyForm)
+                     PostForm, AddTagForm, DelClassifyForm, AddClassifyForm, IDListForm)
 
 
 @manage.route('/manage/edit-profile', methods=['GET', 'POST'])
@@ -206,12 +206,15 @@ def manage_classifys():
 @admin_required
 def manage_users():
     users = User.query.all()
-    return render_template('manage/users.html',users=users)
+    return render_template('manage/users.html', users=users)
 
 
-@manage.route('/manage/posts')
+@manage.route('/manage/posts', methods=['GET', 'POST'])
 @login_required
 @admin_required
 def manage_posts():
     posts = Post.query.all()
-    return render_template('manage/posts.html', posts=posts)
+    id_list = IDListForm()
+    if id_list.validate_on_submit():
+        print(id_list.id_list.data)
+    return render_template('manage/posts.html', posts=posts,id_list=id_list)

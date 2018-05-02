@@ -1,10 +1,10 @@
 from flask_pagedown.fields import PageDownField
 from flask_wtf import FlaskForm
 from wtforms import (BooleanField, FieldList, FormField, SelectField,
-                     StringField, SubmitField, TextAreaField)
+                     StringField, SubmitField, TextAreaField,IntegerField)
 from wtforms.validators import Email, Length, Regexp, Required, ValidationError
 
-from..models import Role, User, Tag, Classify
+from ..models import Role, User, Tag, Classify, Post
 
 
 class EditProfileForm(FlaskForm):
@@ -114,3 +114,9 @@ class DelClassifyForm(FlaskForm):
         if tmp:
             return tmp
         return None
+
+
+class IDListForm(FlaskForm):
+    id_list = FieldList(IntegerField('ID号'))
+    submit = SubmitField('提交')
+
