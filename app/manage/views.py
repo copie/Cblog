@@ -6,7 +6,7 @@ from .. import db
 from .. decorators import admin_required, permission_required
 from .. models import Post, Role, Tag, User, Classify
 from . forms import (EditProfileAdminForm, EditProfileForm, DelTagForm,
-                     PostForm, AddTagForm, DelClassifyForm, AddClassifyForm, IDListForm)
+                     PostForm, AddTagForm, DelClassifyForm, AddClassifyForm, DelPostsForm)
 
 
 @manage.route('/manage/edit-profile', methods=['GET', 'POST'])
@@ -209,12 +209,23 @@ def manage_users():
     return render_template('manage/users.html', users=users)
 
 
+def select_sql_post(id):
+    tmp = Post.query.filter_by(id=id).first()
+    if tmp:
+        return tmp
+    return None
+
+
 @manage.route('/manage/posts', methods=['GET', 'POST'])
 @login_required
 @admin_required
 def manage_posts():
+    del_post_id = DelPostsForm()
+    if request.args.get('do') == 'del':
+        if del_post_id.validate_on_submit():
+            list(map(db.session.delete, map(
+                select_sql_post, del_post_id.id_list.data)))
+            db.session.commit()
+            return redirect(url_for('manage.manage_posts'))
     posts = Post.query.all()
-    id_list = IDListForm()
-    if id_list.validate_on_submit():
-        print(id_list.id_list.data)
-    return render_template('manage/posts.html', posts=posts,id_list=id_list)
+    return render_template('manage/posts.html', posts=posts, id_list=del_post_id)

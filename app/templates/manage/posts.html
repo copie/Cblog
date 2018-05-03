@@ -7,6 +7,8 @@
 
 
 {% block content %}
+<form action="{{ url_for('manage.manage_posts',do='del') }}" method="post">
+{{ id_list.hidden_tag() }}
 <table border="1px">
     <tr>
         <td>选中</td>
@@ -19,22 +21,20 @@
         <th>最后修改时间</th>
         <th>修改</th>
     </tr>
-    <form action="" method="post">
-    {{ id_list.hidden_tag() }}
-    {% for post in posts %}
-    <tr>
-        <td><input type="checkbox" name="id_list-{{ loop.index0 }}" id="id_list-{{ loop.index0 }}" value="{{ post.id }}"></td>
-        <td>{{ loop.index }}</td>
-        <td>{{ post.id }}</td>
-        <td>{{ post.title }}</td>
-        <td>{{ post.author.username }}</td>
-        <td>{{ post.tags.all()|join(',', attribute='tag') }}</td>
-        <td>{{ post.classifys.all()|join(',', attribute='classify') }}</td>
-        <td>{{ post.timestamp}}</td>
-        <td><a href="{{ url_for('manage.manageblog',id=post.id,next=url_for('manage.manage_posts')) }}">修改</a></td>
-    </tr>
-     {% endfor %}
-     {{ id_list.submit() }}    
-    </form>
+        {% for post in posts %}
+        <tr>
+            <td><input type="checkbox" name="id_list-{{ loop.index0 }}" id="id_list-{{ loop.index0 }}" value="{{ post.id }}"></td>
+            <td>{{ loop.index }}</td>
+            <td>{{ post.id }}</td>
+            <td>{{ post.title }}</td>
+            <td>{{ post.author.username }}</td>
+            <td>{{ post.tags.all()|join(',', attribute='tag') }}</td>
+            <td>{{ post.classifys.all()|join(',', attribute='classify') }}</td>
+            <td>{{ post.timestamp}}</td>
+            <td><a href="{{ url_for('manage.manageblog',id=post.id,next=url_for('manage.manage_posts')) }}">修改</a></td>
+        </tr>
+        {% endfor %}
 </table>
+{{ id_list.submit() }}    
+</form>
 {% endblock %}

@@ -116,7 +116,17 @@ class DelClassifyForm(FlaskForm):
         return None
 
 
-class IDListForm(FlaskForm):
+class DelPostsForm(FlaskForm):
     id_list = FieldList(IntegerField('ID号'))
     submit = SubmitField('提交')
 
+    def validate_id_list(self, field):
+        print(field.data)
+        if not all(map(self.select_sql, field.data)):
+            raise ValidationError("想要删除不存在的文章")
+    
+    def select_sql(self, id):
+        tmp = Post.query.filter_by(id=id).first()
+        if tmp:
+            return tmp
+        return None
