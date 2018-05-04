@@ -6,7 +6,7 @@ from .. import db
 from .. decorators import admin_required, permission_required
 from .. models import Post, Role, Tag, User, Classify
 from . forms import (EditProfileAdminForm, EditProfileForm, DelTagForm,
-                     PostForm, AddTagForm, DelClassifyForm, AddClassifyForm, DelPostsForm)
+                     PostForm, AddTagForm, AddClassifyForm, ManageWithIDs)
 
 
 @manage.route('/manage/edit-profile', methods=['GET', 'POST'])
@@ -109,13 +109,6 @@ def manageblog(id=None):
                            all_tag=all_tag, all_classify=all_classify)
 
 
-def select_sql_tag(tag):
-    tmp = Tag.query.filter_by(tag=tag).first()
-    if tmp:
-        return tmp
-    return None
-
-
 def add_tags(tag_str):
     tag_list = tag_str.split(',')
     tags = []
@@ -134,41 +127,33 @@ def add_tags(tag_str):
 @login_required
 @admin_required
 def manage_tags():
-    form_one = AddTagForm()
-    form_list = DelTagForm()
+    add_tag = AddTagForm()
+    del_tag_id = ManageWithIDs(Tag)
     if request.args.get('do') == 'del':
-        if form_list.validate_on_submit():
-            list(map(db.session.delete, map(
-                select_sql_tag, form_list.tags.data.split(','))))
+        if del_tag_id.validate_on_submit():
+            list(map(db.session.delete, del_tag_id.datas)
             db.session.commit()
 
     if request.args.get('do') == 'add':
-        if form_one.validate_on_submit():
-            tag = Tag()
-            tag.tag = form_one.tag.data
+        if add_tag.validate_on_submit():
+            tag=Tag()
+            tag.tag=add_tag.tag.data
             db.session.add(tag)
             db.session.commit()
 
-    tags = (x.tag for x in Tag.query.filter_by().all())
+    tags=Tag.query.filter_by().all()
     return render_template('manage/tags.html',
-                           form_one=form_one, form_list=form_list, tags=tags)
-
-
-def select_sql_classify(classify):
-    tmp = Classify.query.filter_by(classify=classify).first()
-    if tmp:
-        return tmp
-    return None
+                           add_tag=add_tag, del_tag_id=del_tag_id, tags=tags)
 
 
 def add_classifys(classify_str):
-    classify_list = classify_str.split(',')
+    classify_list=classify_str.split(',')
     classifys = []
     for classify in classify_list:
-        s_classify = select_sql_classify(classify)
+        s_classify= select_sql_classify(classify)
         if not s_classify:
-            s_classify = Classify()
-            s_classify.classify = classify
+            s_classify=C lassify()
+            s_classify.classify=classify
             db.session.add(s_classify)
         classifys.append(s_classify)
     db.session.commit()
@@ -180,52 +165,44 @@ def add_classifys(classify_str):
 @admin_required
 def manage_classifys():
 
-    form_one = AddClassifyForm()
-    form_list = DelClassifyForm()
+    add_classify=AddClassifyForm()
+    del_classify_id=ManageWithIDs(Classify)
     if request.args.get('do') == 'del':
-        if form_list.validate_on_submit():
-            list(map(db.session.delete, map(
-                select_sql_classify, form_list.classifys.data.split(','))))
+        if del_classify_id.validate_on_submit():
+            list(map(db.session.delete, del_classify_id.datas))
             db.session.commit()
-
+            return redirect(url_for('manage.manage_classifys'))
     if request.args.get('do') == 'add':
-        if form_one.validate_on_submit():
-            classify = Classify()
-            classify.classify = form_one.classify.data
+        if add_classify.validate_on_submit():
+            classify=Classify()
+            classify.classify=add_classify.classify.data
             db.session.add(classify)
             db.session.commit()
+            return redirect(url_for('manage.manage_classifys'))
 
-    classifys = (x.classify for x in Classify.query.filter_by().all())
+    classifys=Classify.query.filter_by().all()
     return render_template('manage/classifys.html',
-                           form_one=form_one,
-                           form_list=form_list, classifys=classifys)
+                           add_classify=add_classify,
+                           del_classify_id=del_classify_id, classifys=classifys)
 
 
 @manage.route('/manage/users')
 @login_required
 @admin_required
 def manage_users():
-    users = User.query.all()
+    users=User.query.all()
     return render_template('manage/users.html', users=users)
-
-
-def select_sql_post(id):
-    tmp = Post.query.filter_by(id=id).first()
-    if tmp:
-        return tmp
-    return None
 
 
 @manage.route('/manage/posts', methods=['GET', 'POST'])
 @login_required
 @admin_required
 def manage_posts():
-    del_post_id = DelPostsForm()
+    del_post_id=ManageWithIDs(Post)
     if request.args.get('do') == 'del':
         if del_post_id.validate_on_submit():
-            list(map(db.session.delete, map(
-                select_sql_post, del_post_id.id_list.data)))
+            list(map(db.session.delete, del_post_id.datas))
             db.session.commit()
             return redirect(url_for('manage.manage_posts'))
-    posts = Post.query.all()
+    posts=Post.query.all()
     return render_template('manage/posts.html', posts=posts, id_list=del_post_id)

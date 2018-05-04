@@ -1,7 +1,7 @@
 from flask_pagedown.fields import PageDownField
 from flask_wtf import FlaskForm
 from wtforms import (BooleanField, FieldList, FormField, SelectField,
-                     StringField, SubmitField, TextAreaField,IntegerField)
+                     StringField, SubmitField, TextAreaField, IntegerField)
 from wtforms.validators import Email, Length, Regexp, Required, ValidationError
 
 from ..models import Role, User, Tag, Classify, Post
@@ -65,23 +65,23 @@ class AddTagForm(FlaskForm):
             raise ValidationError("已经有了相同的标签插入失败")
 
 
-class DelTagForm(FlaskForm):
-    tags = StringField('标签名称',
-                       validators=[
-                           Required(message='标签为空'),
-                           Regexp('^[\u4e00-\u9fa5\w]+[,\u4e00-\u9fa5\w]*$',
-                                  message='删除标签失败')])
-    submit = SubmitField('提交')
+# class DelTagForm(FlaskForm):
+#     tags = StringField('标签名称',
+#                        validators=[
+#                            Required(message='标签为空'),
+#                            Regexp('^[\u4e00-\u9fa5\w]+[,\u4e00-\u9fa5\w]*$',
+#                                   message='删除标签失败')])
+#     submit = SubmitField('提交')
 
-    def validate_tags(self, field):
-        if not all(map(self.select_sql, field.data.split(','))):
-            raise ValidationError("想要删除不存在的标签")
+#     def validate_tags(self, field):
+#         if not all(map(self.select_sql, field.data.split(','))):
+#             raise ValidationError("想要删除不存在的标签")
 
-    def select_sql(self, tag):
-        tmp = Tag.query.filter_by(tag=tag).first()
-        if tmp:
-            return tmp
-        return None
+#     def select_sql(self, tag):
+#         tmp = Tag.query.filter_by(tag=tag).first()
+#         if tmp:
+#             return tmp
+#         return None
 
 
 class AddClassifyForm(FlaskForm):
@@ -97,36 +97,21 @@ class AddClassifyForm(FlaskForm):
             raise ValidationError("已经有了相同的分类插入失败")
 
 
-class DelClassifyForm(FlaskForm):
-    classifys = StringField('分类名称',
-                            validators=[
-                                Required(message='输入分类为空'),
-                                Regexp('^[\u4e00-\u9fa5\w]+[,\u4e00-\u9fa5\w]*$',
-                                       message='删除分类失败')])
-    submit = SubmitField('提交')
-
-    def validate_classifys(self, field):
-        if not all(map(self.select_sql, field.data.split(','))):
-            raise ValidationError("想要删除不存在的分类")
-
-    def select_sql(self, classify):
-        tmp = Classify.query.filter_by(classify=classify).first()
-        if tmp:
-            return tmp
-        return None
-
-
-class DelPostsForm(FlaskForm):
+class ManageWithIDs(FlaskForm):
     id_list = FieldList(IntegerField('ID号'))
     submit = SubmitField('提交')
 
+    def __init__(self, data_table, *args, **kwargs):
+        self.data_table = data_table
+        super().__init__(*args, **kwargs)
+
     def validate_id_list(self, field):
-        print(field.data)
-        if not all(map(self.select_sql, field.data)):
-            raise ValidationError("想要删除不存在的文章")
-    
+        self.datas = list(map(self.select_sql, field.data))
+        if not all(self.datas):
+            raise ValidationError("想要操作不存在的ID")
+
     def select_sql(self, id):
-        tmp = Post.query.filter_by(id=id).first()
+        tmp = self.data_table.query.filter_by(id=id).first()
         if tmp:
             return tmp
         return None

@@ -5,76 +5,37 @@
     修改分类
 {% endblock %}
 
-{% block script %}
-    {{ super() }}
-    function set_pick(target) {
-        target.style.color = 'green'
-        target.style.background = 'red'
-    }
-    function set_nopick(target) {
-        target.style.color = 'red';
-        target.style.background = 'green';
-    }
-    classifys = new Set();    
-    // 事件委托
-    function clickp(e) {
-        console.log(e)
-        var event = e || window.event||arguments.callee.caller;
-        
-        var target = event.target || event.srcElement;
-        if (target.matches('p')) {
-            if(classifys.has(target.innerText)){
-                set_nopick(target)
-                classifys.delete(target.innerText)
-            }else{
-                classifys.add(target.innerText)
-                set_pick(target);
-            }
-            var del = document.getElementById('classifys')
-            del.value = [...classifys].join(',')
-        }
-        
-    }
-    (function(){
-        document.getElementById('classify_table').addEventListener('click',clickp);
-    })()
-
-{% endblock %}
-
-{% block style %}
-    {{ super() }}
-    #classifys{
-        display: none;
-    }
-{% endblock %}
-
 {% block body%}
 
     {{ super() }}
-    {{ macro.flash_all(form_list.errors.classifys)}}
-    {{ macro.flash_all(form_one.errors.classify)}}
+    {{ macro.flash_all(del_classify_id.errors.id_list)}}
+    {{ macro.flash_all(add_classify.errors.classify)}}
 
 {% endblock %}
 
 {% block content %}
-
 {{ super() }}
+<form action="{{ url_for('manage.manage_classifys', do='del')}}" method="POST">
+{{ del_classify_id.hidden_tag() }}
 <div id='classify_table'>
-    {% for x in classifys %}
-    <p class='classify_lable' >{{ x }}</p>
+    {% for classify in classifys %}
+    <div>
+        <input type="checkbox" name="id_list-{{ loop.index0 }}" id="id_list-{{ loop.index0 }}" value="{{ classify.id }}">
+        <p class='classify_lable' >{{ classify.classify }}</p>
+    </div>
+    
     {% endfor %}
 </div>
-<p>删除</p>
-<form action="{{ url_for('manage.manage_classifys', do='del')}}" method="POST">
-    {{ form_list.hidden_tag() }}
-    {{ form_list.classifys() }}
-    {{ form_list.submit() }}
+
+    {{ del_classify_id.submit() }}
 </form>
+
+
 <p>添加</p>
 <form action="{{ url_for('manage.manage_classifys', do='add')}}" method="POST">
-        {{ form_one.hidden_tag() }}
-        {{ form_one.classify() }}
-        {{ form_one.submit() }}
+        {{ add_classify.hidden_tag() }}
+        {{ add_classify.classify() }}
+        {{ add_classify.submit() }}
     </form>
 
 {% endblock %}
