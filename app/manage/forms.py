@@ -65,25 +65,6 @@ class AddTagForm(FlaskForm):
             raise ValidationError("已经有了相同的标签插入失败")
 
 
-# class DelTagForm(FlaskForm):
-#     tags = StringField('标签名称',
-#                        validators=[
-#                            Required(message='标签为空'),
-#                            Regexp('^[\u4e00-\u9fa5\w]+[,\u4e00-\u9fa5\w]*$',
-#                                   message='删除标签失败')])
-#     submit = SubmitField('提交')
-
-#     def validate_tags(self, field):
-#         if not all(map(self.select_sql, field.data.split(','))):
-#             raise ValidationError("想要删除不存在的标签")
-
-#     def select_sql(self, tag):
-#         tmp = Tag.query.filter_by(tag=tag).first()
-#         if tmp:
-#             return tmp
-#         return None
-
-
 class AddClassifyForm(FlaskForm):
     classify = StringField('分类名称', validators=[Required(message='分类不能为空'),
                                                Length(

@@ -6,8 +6,11 @@
 {% endblock %}
 
 {% block content %}
+<form action="{{ url_for('manage.manage_users',do='del') }}" method="post">
+{{ id_list.hidden_tag() }}
 <table border="1px">
         <tr>
+          <td>选中</td>
           <th>列数</th>
           <th>id</th>
           <th>邮箱</th>
@@ -24,6 +27,7 @@
         </tr>
             {% for user in users %}
             <tr>
+                <td><input type="checkbox" name="id_list-{{ loop.index0 }}" id="id_list-{{ loop.index0 }}" value="{{ user.id }}"></td>
                 <td>{{ loop.index}}</td>
                 <td>{{ user.id }}</td>
                 <td>{{ user.email }}</td>
@@ -39,4 +43,6 @@
             </tr>
             {% endfor %}          
       </table>
+{{ id_list.submit() }}
+</form>
 {% endblock %}

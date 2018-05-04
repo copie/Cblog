@@ -7,23 +7,23 @@
 
 {% block body%}
     {{ super() }}
-    {{ macro.flash_all(del_tag_id.errors.classifys)}}
+    {{ macro.flash_all(id_list.errors.classifys)}}
     {{ macro.flash_all(add_tag.errors.classify)}}
 {% endblock %}
 
 {% block content %}
 <form action="{{ url_for('manage.manage_tags', do='del')}}" method="POST">
-{{ del_tag_id.hidden_tag() }}
+{{ id_list.hidden_tag() }}
 <div id='tag_table'>
     
     {% for tag in tags %}
     <div>
         <input type="checkbox" name="id_list-{{ loop.index0 }}" id="id_list-{{ loop.index0 }}" value="{{ tag.id }}">        
-        <p class='tag_lable' >{{ x }}</p>            
+        <p class='tag_lable' >{{ tag.tag }}</p>            
     </div>
     {% endfor %}
 </div>
-    {{ del_tag_id.submit() }}
+    {{ id_list.submit() }}
 </form>
 <p>添加</p>
 <form action="{{ url_for('manage.manage_tags', do='add')}}" method="POST">

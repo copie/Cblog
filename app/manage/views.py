@@ -1,12 +1,13 @@
-from flask import abort, flash, redirect, render_template, url_for, request
+from flask import abort, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
 from wtforms import BooleanField
+
 from . import manage
 from .. import db
-from .. decorators import admin_required, permission_required
-from .. models import Post, Role, Tag, User, Classify
-from . forms import (EditProfileAdminForm, EditProfileForm, DelTagForm,
-                     PostForm, AddTagForm, AddClassifyForm, ManageWithIDs)
+from ..decorators import admin_required, permission_required
+from ..models import Classify, Post, Role, Tag, User
+from .forms import (AddClassifyForm, AddTagForm, EditProfileAdminForm,
+                    EditProfileForm, ManageWithIDs, PostForm)
 
 
 @manage.route('/manage/edit-profile', methods=['GET', 'POST'])
@@ -131,29 +132,29 @@ def manage_tags():
     del_tag_id = ManageWithIDs(Tag)
     if request.args.get('do') == 'del':
         if del_tag_id.validate_on_submit():
-            list(map(db.session.delete, del_tag_id.datas)
+            list(map(db.session.delete, del_tag_id.datas))
             db.session.commit()
-
+        return redirect(url_for('manage.manage_tags'))
     if request.args.get('do') == 'add':
         if add_tag.validate_on_submit():
-            tag=Tag()
-            tag.tag=add_tag.tag.data
+            tag = Tag()
+            tag.tag = add_tag.tag.data
             db.session.add(tag)
             db.session.commit()
-
-    tags=Tag.query.filter_by().all()
+        return redirect(url_for('manage.manage_tags'))
+    tags = Tag.query.filter_by().all()
     return render_template('manage/tags.html',
-                           add_tag=add_tag, del_tag_id=del_tag_id, tags=tags)
+                           add_tag=add_tag, id_list=del_tag_id, tags=tags)
 
 
 def add_classifys(classify_str):
-    classify_list=classify_str.split(',')
+    classify_list = classify_str.split(',')
     classifys = []
     for classify in classify_list:
-        s_classify= select_sql_classify(classify)
+        s_classify = select_sql_classify(classify)
         if not s_classify:
-            s_classify=C lassify()
-            s_classify.classify=classify
+            s_classify = Classify()
+            s_classify.classify = classify
             db.session.add(s_classify)
         classifys.append(s_classify)
     db.session.commit()
@@ -165,8 +166,8 @@ def add_classifys(classify_str):
 @admin_required
 def manage_classifys():
 
-    add_classify=AddClassifyForm()
-    del_classify_id=ManageWithIDs(Classify)
+    add_classify = AddClassifyForm()
+    del_classify_id = ManageWithIDs(Classify)
     if request.args.get('do') == 'del':
         if del_classify_id.validate_on_submit():
             list(map(db.session.delete, del_classify_id.datas))
@@ -174,35 +175,41 @@ def manage_classifys():
             return redirect(url_for('manage.manage_classifys'))
     if request.args.get('do') == 'add':
         if add_classify.validate_on_submit():
-            classify=Classify()
-            classify.classify=add_classify.classify.data
+            classify = Classify()
+            classify.classify = add_classify.classify.data
             db.session.add(classify)
             db.session.commit()
             return redirect(url_for('manage.manage_classifys'))
 
-    classifys=Classify.query.filter_by().all()
+    classifys = Classify.query.filter_by().all()
     return render_template('manage/classifys.html',
                            add_classify=add_classify,
                            del_classify_id=del_classify_id, classifys=classifys)
 
 
-@manage.route('/manage/users')
+@manage.route('/manage/users', methods=['GET', 'POST'])
 @login_required
 @admin_required
 def manage_users():
-    users=User.query.all()
-    return render_template('manage/users.html', users=users)
+    users = User.query.all()
+    del_user_id = ManageWithIDs(User)
+    if request.args.get('do') == 'del':
+        if del_user_id.validate_on_submit():
+            list(map(db.session.delete, del_user_id.datas))
+            db.session.commit()
+        return redirect(url_for('manage.manage_users'))  
+    return render_template('manage/users.html', users=users,id_list=del_user_id)
 
 
 @manage.route('/manage/posts', methods=['GET', 'POST'])
 @login_required
 @admin_required
 def manage_posts():
-    del_post_id=ManageWithIDs(Post)
+    del_post_id = ManageWithIDs(Post)
     if request.args.get('do') == 'del':
         if del_post_id.validate_on_submit():
             list(map(db.session.delete, del_post_id.datas))
             db.session.commit()
             return redirect(url_for('manage.manage_posts'))
-    posts=Post.query.all()
+    posts = Post.query.all()
     return render_template('manage/posts.html', posts=posts, id_list=del_post_id)
