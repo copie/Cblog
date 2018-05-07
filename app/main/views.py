@@ -51,7 +51,11 @@ def tags():
 
 @main.route('/tag/<tag>')
 def tag(tag):
-    return tag
+    tag = Tag.query.filter_by(tag=tag).first()
+    if tag is None:
+        abort(404)
+    posts = tag.posts
+    return render_template('main/index.html', posts=posts)
 
 
 @main.route('/posts')
@@ -73,6 +77,7 @@ def page(num):
     print(num_list)
     return render_template('main/index.html', info_list=info_list(),
                            posts=posts, num=num, num_list=num_list)
+
 
 @main.route('/post/<int:id>.html')
 def post(id):

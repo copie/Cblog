@@ -110,6 +110,13 @@ def manageblog(id=None):
                            all_tag=all_tag, all_classify=all_classify)
 
 
+def select_sql_tag(tag):
+    tmp = Tag.query.filter_by(tag=tag).first()
+    if tmp:
+        return tmp
+    return None
+
+
 def add_tags(tag_str):
     tag_list = tag_str.split(',')
     tags = []
@@ -145,6 +152,13 @@ def manage_tags():
     tags = Tag.query.filter_by().all()
     return render_template('manage/tags.html',
                            add_tag=add_tag, id_list=del_tag_id, tags=tags)
+
+
+def select_sql_classify(classify):
+    tmp = Classify.query.filter_by(classify=classify).first()
+    if tmp:
+        return tmp
+    return None
 
 
 def add_classifys(classify_str):
@@ -197,8 +211,8 @@ def manage_users():
         if del_user_id.validate_on_submit():
             list(map(db.session.delete, del_user_id.datas))
             db.session.commit()
-        return redirect(url_for('manage.manage_users'))  
-    return render_template('manage/users.html', users=users,id_list=del_user_id)
+        return redirect(url_for('manage.manage_users'))
+    return render_template('manage/users.html', users=users, id_list=del_user_id)
 
 
 @manage.route('/manage/posts', methods=['GET', 'POST'])
