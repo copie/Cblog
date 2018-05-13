@@ -21,7 +21,7 @@ class User(db.Model, UserMixin):
     location = db.Column(db.String(64))
     about_me = db.Column(db.Text())
     member_since = db.Column(db.DateTime(), default=datetime.utcnow())
-    last_since = db.Column(db.DateTime(), default=datetime.utcnow())
+    last_seen = db.Column(db.DateTime(), default=datetime.utcnow())
     posts = db.relationship('Post', backref='author', lazy='dynamic')
 
     def __init__(self, ** kwargs):
@@ -33,7 +33,7 @@ class User(db.Model, UserMixin):
                 self.role = Role.query.filter_by(default=True).first()
 
     def ping(self):
-        self.last_since = datetime.utcnow()
+        self.last_seen = datetime.utcnow()
         db.session.add(self)
 
     def can(self, permissions):
@@ -54,8 +54,8 @@ class User(db.Model, UserMixin):
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
 
-    def genrate_confirmation_tonken(self, expiration=3600):
-        s = Serializer(current_app.config['SECRET_KEY'], expires_in=3600)
+    def generate_confirmation_token(self, expiration=3600):
+        s = Serializer(current_app.config['SECRET_KEY'], expires_in=expiration)
         return s.dumps({'confirm': self.id})
 
     def confirm(self, token):
@@ -95,14 +95,14 @@ class Role(db.Model):
     def install_roles():
         roles = {
             'Reader': (Permission.FOLLOW |
-                       Permission.COMMIT, True),
+                       Permission.COMMENT, True),
             'Writer': (Permission.FOLLOW |
-                       Permission.COMMIT |
+                       Permission.COMMENT |
                        Permission.WRITE_ARTICLES, False),
             'Moderator': (Permission.FOLLOW |
-                          Permission.COMMIT |
+                          Permission.COMMENT |
                           Permission.WRITE_ARTICLES |
-                          Permission.MODERATE_COMMIT, False),
+                          Permission.MODERATE_COMMENT, False),
             'Administrator': (0xff, False)
         }
         for r in roles:
@@ -111,7 +111,6 @@ class Role(db.Model):
                 role = Role(name=r)
             role.permissions = roles[r][0]
             role.default = roles[r][1]
-            print(r, roles[r][0], roles[r][1])
             db.session.add(role)
         db.session.commit()
 
@@ -126,9 +125,9 @@ def load_user(user_id):
 
 class Permission:
     FOLLOW = 0x01
-    COMMIT = 0x02
+    COMMENT = 0x02
     WRITE_ARTICLES = 0x04
-    MODERATE_COMMIT = 0x08
+    MODERATE_COMMENT = 0x08
     ADMINISTER = 0x80
 
 

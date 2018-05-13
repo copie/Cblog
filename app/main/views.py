@@ -73,11 +73,9 @@ def page(num):
         (num - 1) * n: num * n - 1]
     posts_len = int(len(Post.query.all())/n)+1
     num_list = range(1 if num < 5 else num-4,
-                     posts_len+1 if num > posts_len - 5 else num + 4)
-    print(num_list)
+                     posts_len + 1 if num > posts_len - 5 else num + 4)
     return render_template('main/index.html', info_list=info_list(),
                            posts=posts, num=num, num_list=num_list)
-
 
 @main.route('/post/<int:id>.html')
 def post(id):

@@ -21,7 +21,7 @@ def register():
                     password=password)
         db.session.add(user)
         db.session.commit()
-        token = user.genrate_confirmation_tonken()
+        token = user.generate_confirmation_token()
         send_email(user.email, "确认你的帐号", 'auth/email/confirm',
                    user=user, token=token)
         flash('确认邮件已经发出,请在一小时之内确认')
